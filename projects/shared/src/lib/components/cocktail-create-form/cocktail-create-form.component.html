@@ -1,0 +1,195 @@
+<div class="cocktail-create">
+  <div class="cocktail-name-container">
+    <form [formGroup]="selectedForm">
+      <p-float-label variant="on">
+        <input pInputText id="cocktailName" formControlName="name" class="cocktail-name" />
+        <label for="on_label">Name your cocktail</label>
+      </p-float-label>
+    </form>
+  </div>
+
+
+  <p-card class="cocktail-card" [style]="{ overflow: 'hidden' }">
+    <div class="card-content">
+      <!-- Left: Image -->
+
+      <div class="image-side">
+        <form [formGroup]="selectedForm">
+
+          <div class="image-wrapper">
+            <!-- Optional: Image preview -->
+            <div *ngIf="selectedForm.value.image" class="image-preview">
+              <p-image [src]="selectedForm.value.image" alt="Image Preview" width="350" />
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Right: Info in 2 columns + instructions below -->
+      <div class="info-container">
+        <div class="top-info">
+          <!-- Ingredients -->
+          <div class="info-section ingredients">
+            <div class="input-number-label">
+              <p-fluid>
+                <form [formGroup]="ingredientsNumbers">
+                  <label for="ingredientCount" class="p-inputnumber-label">
+                    Number of ingredients
+                  </label>
+                  <p-inputnumber formControlName="number" [showButtons]="true" buttonLayout="horizontal"
+                    inputId="ingredientCount" spinnerMode="horizontal" [step]="1" mode="decimal" [min]="1" [max]="10">
+                    <ng-template #incrementbuttonicon>
+                      <span class="pi pi-plus"></span>
+                    </ng-template>
+                    <ng-template #decrementbuttonicon>
+                      <span class="pi pi-minus"></span>
+                    </ng-template>
+                  </p-inputnumber>
+                </form>
+              </p-fluid>
+
+              <div class="p-inputgroup" [formGroup]="selectedForm">
+                <p-button icon="pi pi-image" label="Search for an image" severity="secondary" (click)="openImageSearch()" [style]="{ width: '200px'}"></p-button>
+                <p-dialog
+                  [(visible)]="imageDialog"
+                  header="Search the image by typing the cocktail's name"
+                  [modal]="true"
+                  [closable]="true"
+                  [style]="{ 'max-width': '1500px', width: '100%',
+                    height: '100%', gap: '0.5rem', margin: '1rem',
+                    background: 'black', display: 'flex',
+                  }"
+                  >
+                  <div class="search-bar">
+                    <p-float-label variant="in">
+                      <input type="text" pInputText formControlName="image" />
+                      <label for="on_label">Search image</label>
+                    </p-float-label>
+                    <p-button icon="pi pi-times" severity="secondary" label="Clear" (click)="selectedForm.get('image')?.setValue('')"></p-button>
+                  </div>
+                  <div class="images-grid">
+                    <p-card *ngFor="let image of images" [style]="{ width: '200px', height: 'auto' }" (click)="selectImage(image.url)">
+                      <ng-template #header>
+                        <p-image
+                        alt="Cocktail Image"
+                        class="image-card"
+                        [src]="image.url"
+                        [style]="{ cursor: 'pointer', 'border-radius': '0.5rem' }"
+                        width="200"
+                        [preview]="true"
+                        >
+                          <ng-template #indicator>
+                            <i class="card-indicator">Choose</i>
+                          </ng-template>
+                        </p-image>
+                      </ng-template>
+                      <ng-template #content>
+                        Artist: <a [href]="image.photographerUrl" >{{ image.photographer }}</a>
+                      </ng-template>
+                      <ng-template #footer>
+                        Source: {{ image.source }}
+                      </ng-template>
+                    </p-card>
+                  </div>
+                </p-dialog>
+              </div>
+            </div>
+            <form [formGroup]="selectedForm">
+              <div formArrayName="ingredientsList">
+                <h3 class="ingredient-title">Choose an existing ingredient or add a new one</h3>
+                <div *ngFor="let group of ingredientsList.controls; let index = index" [formGroupName]="index">
+                  <div class="ingredient-selectors">
+
+                      <div class="select-ingredient" *ngIf="ingredientExists[index] || showAddedIngredient[index]">
+                        <label for="ingredient{{ index }}" class="ingredients-label">
+                          Ingredient {{ index + 1 }} and quantity
+                        </label>
+
+                        <ng-container *ngIf="!showAddedIngredient[index]; else customIngredient">
+                          <div class="ingredient-controls">
+                            <p-select
+                            [options]="filterOptions['ingredients']"
+                            formControlName="id"
+                            optionLabel="name"
+                            [placeholder]="placeholders['ingredients']"
+                            [showClear]="true"
+                            ></p-select>
+
+                              <p-float-label variant="on">
+                                <input type="text" pInputText formControlName="quantity" class="quantity-input" />
+                                <label for="on_label">Insert quantity</label>
+                              </p-float-label>
+
+                              <p-select [options]="filterOptions['measures']" formControlName="measure" [placeholder]="placeholders['measure']" optionLabel="name" [showClear]="true"  />
+
+                              <p-button icon="pi pi-plus" (click)="openIngredientDialog(index)" class="p-button-sm"></p-button>
+                            </div>
+                          </ng-container>
+
+                          <ng-template #customIngredient>
+                            <div class="ingredient-controls">
+                              <input type="text" pInputText formControlName="name" class="new-ingredient" />
+                              <input type="text" pInputText formControlName="quantity" class="new-quantity" />
+                              <p-button icon="pi pi-times" (click)="removeIngredient(index)" class="p-button-sm"></p-button>
+                            </div>
+                          </ng-template>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <p-dialog [(visible)]="ingredientDialog" header="Add a new ingredient" [modal]="true" [closable]="false">
+                <div class="inputs-dialog" [formGroup]="selectedIngredientGroup">
+                  <p-float-label variant="on">
+                    <input type="text" id="ingredient" pInputText formControlName="name" />
+                    <label for="ingredient">Insert new ingredient</label>
+                  </p-float-label>
+                  <p-float-label variant="on">
+                    <input type="text" id="quantity" pInputText formControlName="quantity" />
+                    <label for="quantity">Insert quantity</label>
+                  </p-float-label>
+                  <p-select [options]="filterOptions['measures']" formControlName="measure" [appendTo]="'body'" [placeholder]="placeholders['measure']" optionLabel="name" [showClear]="true" />
+                  <div class="buttons-dialog">
+                    <p-button label="Cancel" icon="pi pi-times" (click)="ingredientDialog = false" severity="secondary"></p-button>
+                    <p-button label="Add" icon="pi pi-check" (click)="addIngredient()" ></p-button>
+                  </div>
+                </div>
+              </p-dialog>
+             <!-- number chosen before of select with ingredients and + next to it to add an ingredient if missing -->
+          </div>
+
+          <!-- Categories -->
+          <form [formGroup]="selectedForm">
+            <div class="info-section categories">
+              <h3>Type</h3>
+              <p-select [options]="filterOptions['type']" formControlName="type" [placeholder]="placeholders['type']" optionLabel="name" [showClear]="true"></p-select>
+              <h3>Glass</h3>
+              <p-select [options]="filterOptions['glass']" formControlName="glass" [placeholder]="placeholders['glass']" optionLabel="name" [showClear]="true"></p-select>
+              <h3>Alcoholic</h3>
+              <p-select [options]="filterOptions['alcoholic']" formControlName="alcoholic" [placeholder]="placeholders['alcoholic']" optionLabel="name" [showClear]="true"></p-select>
+            </div>
+          </form>
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Instructions under both -->
+        <div class="instructions">
+          <form [formGroup]="selectedForm">
+            <p-float-label variant="on">
+              <textarea pInputText id="instructions-text" formControlName="instructions" rows="5" cols="30"></textarea>
+              <label for="instructions-text">Instructions</label>
+            </p-float-label>
+          </form>
+        </div>
+
+        <div class="create-button">
+          <p-button label="Confirm" icon="pi pi-check" (click)="createCocktail()" ></p-button>
+          <p-button label="Clear all" icon="pi pi-times" (click)="clearAll()"severity="secondary" ></p-button>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</div>

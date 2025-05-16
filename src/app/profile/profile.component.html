@@ -1,0 +1,282 @@
+<ng-container *ngIf="userIsLogged(); else notLoggedIn">
+  <p-toast position="top-center" />
+  <p-confirmDialog />
+  <div class="profile-page">
+    <div class="top-bar">
+      <div class="left-section">
+        <lib-left-buttons></lib-left-buttons>
+      </div>
+      <div class="right-section">
+        <lib-profile-button></lib-profile-button>
+      </div>
+    </div>
+    <div class="profile-container">
+      <div class="layout-wrapper">
+
+        <!-- Tab Buttons -->
+        <div class="tab-buttons-column">
+          <p-button
+            label="Details"
+            [class]="selectedMenu === 'details' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('details')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="Favorites"
+            [class]="selectedMenu === 'favorites' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('favorites')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="Cocktail submitted"
+            [class]="selectedMenu === 'submitted' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('submitted')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="Privacy and data"
+            [class]="selectedMenu === 'privacy' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('privacy')"
+            severity="secondary"
+          ></p-button>
+
+        </div>
+
+      <!-- Content Display -->
+      <div class="content-wrapper">
+        <!-- * DETAILS -->
+        <p-card *ngIf="selectedMenu === 'details'" header="Your Profile Details" class="details-card">
+          <form [formGroup]="profileForm" class="details-form">
+
+            <div class="form-group">
+              <p-float-label variant="on">
+                <input pInputText id="firstName" formControlName="firstName" />
+                <label for="firstName"><strong>First name</strong></label>
+              </p-float-label>
+            </div>
+
+            <div class="form-group">
+              <p-float-label variant="on">
+                <input pInputText id="lastName" formControlName="lastName" />
+                <label for="lastName"><strong>Last name</strong></label>
+              </p-float-label>
+            </div>
+
+            <div class="form-group">
+              <p-float-label variant="on">
+                <p-datepicker id="birthDate" view="month" dateFormat="mm/yy" [readonlyInput]="true" formControlName="birthDate"></p-datepicker>
+                <label for="birthDate"><strong>Birthdate</strong></label>
+              </p-float-label>
+            </div>
+
+            <div class="form-group">
+              <p-float-label variant="on">
+                <input pInputText id="email" formControlName="email" />
+                <label for="email"><strong>Email</strong></label>
+              </p-float-label>
+            </div>
+
+            <div class="form-group">
+              <p-button severity="secondary" label="Change password" (click)="passwordDialog = true"></p-button>
+              <p-dialog header="Change password" [(visible)]="passwordDialog" [modal]="true" [style]="{ width: '400px' }">
+                <form [formGroup]="passwordForm">
+                  <div class="password-group">
+                    <p-float-label variant="in">
+                      <p-password id="old-password" formControlName="oldPassword" [toggleMask]="true"></p-password>
+                      <label for="old-password">Current password</label>
+                    </p-float-label>
+                    <p-float-label variant="in">
+                      <p-password id="new-password" formControlName="newPassword" [toggleMask]="true" ></p-password>
+                      <label for="new-password">New password</label>
+                    </p-float-label>
+                    <p-float-label variant="in">
+                      <p-password id="confirm-password" formControlName="confirmPassword" [toggleMask]="true" class="password"></p-password>
+                      <label for="confirm-password">Confirm password</label>
+                    </p-float-label>
+                  </div>
+                  <div class="password-btn">
+                    <p-button label="Cancel" (click)="passwordDialog = false" severity="secondary"></p-button>
+                    <p-button label="Confirm" (click)="changePassword()" severity="success"></p-button>
+                  </div>
+                </form>
+              </p-dialog>
+            </div>
+
+            <div class="form-group">
+              <p-float-label variant="on">
+                <input pInputText id="username" formControlName="username" />
+                <label for="username"><strong>Username</strong></label>
+              </p-float-label>
+            </div>
+
+          </form>
+
+          <div class="changes-btn">
+            <p-button label="Delete profile" (click)="confirm1($event)" severity="danger"></p-button>
+            <p-button label="Discard changes" (click)="discardChanges()" severity="secondary"></p-button>
+            <p-button label="Save changes" (click)="saveChanges()" severity="success"></p-button>
+          </div>
+        </p-card>
+
+        <!-- * FAVORITES -->
+        <div *ngIf="selectedMenu === 'favorites'" class="favorites-grid">
+          <p-card
+          *ngFor="let card of paginatedFavorites"
+          [style]="{ width: '300px', overflow: 'hidden' }"
+          >
+            <ng-template #header>
+              <p-image
+              alt="Cocktail card"
+              class="image-card"
+                [src]="card.image"
+                [style]="{ cursor: 'pointer' }"
+                width="300"
+                [preview]="true"
+                (click)="displayCardPage(card.id)"
+                >
+                <ng-template #indicator>
+                  <i class="card-indicator">Open</i>
+                </ng-template>
+              </p-image>
+            </ng-template>
+
+            <ng-template #title>
+              <div class="title-container">
+                <span>{{ card.name }}</span>
+                <p-button
+                class="fav-button"
+                [icon]="card.isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                  [style]="{ color: 'red' }"
+                  (click)="manageFavorite(card.id)"
+                  styleClass="w-full"
+                  [severity]="'secondary'"
+                ></p-button>
+              </div>
+            </ng-template>
+          </p-card>
+
+          <p *ngIf="favorites.length === 0" class="no-fav-message">
+            No favorites yet.
+          </p>
+        </div>
+
+        <div class="paginator" *ngIf="favorites.length > 5 && selectedMenu === 'favorites'">
+          <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="favorites.length" [rowsPerPageOptions]="rowsPerPageOptions" />
+        </div>
+
+        <!-- * SUBMITTED -->
+        <div class="submitted-grid" *ngIf="selectedMenu === 'submitted'">
+          <p-card *ngFor="let card of paginatedSubmissions; let index = index" [style]="{ width: '350px', overflow: 'hidden' }">
+            <ng-template #header>
+              <p-image
+                alt="Cocktail card"
+                class="image-card"
+                [src]="card.image"
+                [style]="{ cursor: 'pointer' }"
+                width="350"
+                height="auto"
+                [preview]="true"
+                (click)="card.status === 'Approved' ? displayCardPage(card.name) : ''"
+              >
+                <ng-template #indicator>
+                  <i class="card-indicator" [textContent]="'Open'"></i>
+                </ng-template>
+              </p-image>
+            </ng-template>
+
+            <ng-template #title>
+              <div class="title-container">
+                <div class="title-title-container">
+                  <span>{{ card.name }}</span>
+                </div>
+                <p-tag
+                [severity]="card.status === 'Rejected' ? 'danger' : (card.status === 'Approved' ? 'success' : 'info')"
+                >{{ card.status }}</p-tag>
+                <div class="title-btn">
+                  <p-button label="Edit" severity="info" (click)="editSubmission(card.id, index)"></p-button>
+                  <p-button label="Delete" severity="danger" (click)="confirmDelete($event, card.id)"></p-button>
+                </div>
+              </div>
+            </ng-template>
+
+            <p-dialog header="Edit your submission" [(visible)]="submissionDialog[index]" [modal]="true" [style]="{ 'max-width': '1800px', width: '100%' }" [closable]="true">
+              <app-cocktail-create-form
+              (submitForm)="handleSubmit($event, card.id)">
+              </app-cocktail-create-form>
+            </p-dialog>
+
+          </p-card>
+
+          <p *ngIf="submitted.length === 0" class="no-submitted-message">
+            No cocktails submitted yet.
+          </p>
+        </div>
+
+        <div class="paginator" *ngIf="submitted.length > 6 && selectedMenu === 'submitted'">
+          <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="submitted.length" [rowsPerPageOptions]="rowsPerPageOptions" />
+        </div>
+
+        <!-- * PRIVACY AND DATA -->
+        <div class="privacy">
+          <p-card *ngIf="selectedMenu === 'privacy'" header="Privacy and Data" class="privacy-card">
+            <p>Manage your privacy settings here.</p>
+
+            <form [formGroup]="profileForm">
+
+              <div class="checkbox-group">
+                <div class="checkbox-item">
+                  <p-checkbox
+                  inputId="alcoholAllowed"
+                  formControlName="alcoholAllowed"
+                  binary="true">
+                  </p-checkbox>
+                  <p-fieldset legend="Alcoholic filter" class="checkbox-fieldset">
+                    <p class="m-0">
+                      Use this filter to control whether cocktails shown include alcohol.
+                      Select your preference based on dietary or lifestyle choices.
+                      This helps tailor results to your personal consumption settings.
+                    </p>
+                  </p-fieldset>
+                </div>
+
+                <div class="checkbox-item">
+                  <p-checkbox
+                  inputId="consentProfiling"
+                    formControlName="consentProfiling"
+                    binary="true">
+                  </p-checkbox>
+                  <p-fieldset legend="Profiling consense" class="checkbox-fieldset">
+                    <p class="m-0">
+                      By consenting to profiling, you allow us to analyze your preferences and behavior.
+                      This helps us provide personalized recommendations and improve your experience.
+                      You can withdraw your consense at any time.
+                    </p>
+                  </p-fieldset>
+                </div>
+              </div>
+            </form>
+
+            <div class="changes-btn">
+              <p-button label="Delete profile" (click)="confirm1($event)" severity="danger"></p-button>
+              <p-button label="Discard Changes" (click)="discardChanges()" severity="secondary"></p-button>
+              <p-button label="Save Changes" (click)="saveChanges()" severity="success"></p-button>
+            </div>
+            </p-card>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ng-container>
+
+<ng-template #notLoggedIn>
+  <div class="not-logged-message">
+    <p-dialog class="dialog" [header]="dialogHeader" [(visible)]="visible" [style]="{width: 'width', minWidth: 'minWidth'}" [closable]="false">
+      <p>Please log in to search for cocktails 🍸</p>
+      <p-button label="Login" icon="pi pi-sign-in" (onClick)="redirectHome()"></p-button>
+    </p-dialog>
+  </div>

@@ -1,0 +1,213 @@
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  margin-top: 20px;
+  height: 50px;
+}
+
+.left-section {
+  display: flex;
+
+}
+.right-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.layout-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 90rem;
+  gap: 2rem;
+  margin-top: 5rem;
+  align-items: flex-start;
+}
+
+.tab-buttons-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 200px;
+
+}
+
+.content-wrapper {
+  flex: 1; // fills remaining space
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.details-card,
+.privacy-card {
+  max-width: 600px;
+  width: 100%;
+}
+
+.privacy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.details-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.password {
+  overflow: hidden;
+  display: flex;
+}
+
+.password-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.password-btn {
+  display: flex;
+  margin-top: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; // space between the checkboxes
+  align-items: flex-start;
+  flex-wrap: wrap; // optional: wraps them on small screens
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; // space between checkbox and label
+}
+
+.checkbox-fieldset {
+  border: none;
+  padding: 0;
+  max-width: 500px;
+}
+
+
+textarea,
+input,
+.p-inputtext,
+.p-inputtextarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+.changes-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.favorites-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.favorites-grid,
+.submitted-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.title-container {
+  display: flex;
+  max-width: 300px;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title-title-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.fav-button {
+  border: none;
+  background: transparent;
+}
+
+.image-card {
+  border-radius: 0.5rem;
+  object-fit: cover;
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+}
+
+.card-indicator {
+  font-size: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.no-fav-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.paginator {
+  margin-top: 1rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .p-paginator {
+  background-color: #000000;
+  border: none;
+}
+

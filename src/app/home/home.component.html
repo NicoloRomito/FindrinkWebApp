@@ -1,0 +1,41 @@
+<div class="home-page">
+  <p-toast position="top-center" />
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <div class="left-section">
+      <lib-left-buttons></lib-left-buttons>
+    </div>
+    <div class="center-section"></div>
+    <div class="right-section">
+      <lib-profile-button></lib-profile-button>
+    </div>
+  </div>
+
+  <!-- Header Title -->
+  <div class="title-container">
+    <h1 class="title">{{ firstTitle }}</h1>
+    <h2 class="motion-title">{{ currentTitle }}</h2>
+  </div>
+
+  <!-- Image Masonry Grid -->
+  <div class="image-grid">
+    <div *ngFor="let img of currentImages; let i = index" class="image-item" [style.animationDelay.ms]="i * 80">
+      <div class="image-wrapper">
+        <!-- PrimeNG Skeleton Loader -->
+        <p-skeleton *ngIf="!img.loaded" height="300px" borderRadius="16px" styleClass="image-skeleton"></p-skeleton>
+
+        <!-- Full-Res Image with Blur Effect -->
+        <img
+          [src]="img.src"
+          class="cocktail-img"
+          [class.loaded]="img.loaded"
+          (load)="img.loaded = true"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+
+
+</div>

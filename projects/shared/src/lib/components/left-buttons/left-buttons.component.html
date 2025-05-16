@@ -1,0 +1,15 @@
+<div class="left-bar">
+  <!-- <div *ngIf="!isHomePage()" class="home-button">
+    <p-button icon="pi pi-home" [disabled]="!userIsLogged()" ></p-button>
+  </div> -->
+  <div class="logo-home-button">
+    <img src="logo.webp" alt="logo" width="150" height="auto" style="cursor: pointer;" (click)="redirectToHomePage()" />
+  </div>
+  <div class="create-button" *ngIf="!isCreatePage()">
+    <p-button label="Create" [disabled]="!userIsLogged()" (click)="redirectToCreatePage()"></p-button>
+  </div>
+  <div class="search-button" *ngIf="!isSearchPage()">
+    <p-button label="Explore" [disabled]="!userIsLogged()" (click)="redirectToSearchPage()"></p-button>
+  </div>
+</div>
+

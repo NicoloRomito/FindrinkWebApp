@@ -1,0 +1,60 @@
+<div class="cocktail-pin">
+  <h2 class="cocktail-name">{{ cocktail.name }}</h2>
+
+  <p-card class="cocktail-card" [style]="{ overflow: 'hidden' }">
+    <div class="card-content">
+      <!-- ◂───────── IMAGE SIDE ──────────▸ -->
+      <div class="image-side">
+        <p-button
+          class="favorite-btn"
+          [icon]="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+          (click)="toggleFavorite()">
+        </p-button>
+
+        <div class="image-wrapper">
+          <p-image
+            alt="Cocktail"
+            class="image-card"
+            [src]="cocktail.image"
+            width="450">
+          </p-image>
+        </div>
+      </div>
+
+      <!-- ◂───────── INFO SIDE ──────────▸ -->
+      <div class="info-container">
+        <div class="top-info">
+          <!-- INGREDIENTS -->
+          <div class="info-section ingredients">
+            <h3>Ingredients</h3>
+            <ul class="ingredient-list">
+              <li *ngFor="let ing of cocktail.ingredientsAndMeasures">
+                {{ ingredientLabel(ing) }}
+              </li>
+            </ul>
+          </div>
+
+          <!-- DETAILS -->
+          <div class="info-section categories">
+            <h3>Type</h3>
+            <p>{{ cocktail.category }}</p>
+
+            <h3>Glass</h3>
+            <p>{{ cocktail.glass }}</p>
+
+            <h3>Alcoholic</h3>
+            <p>{{ cocktail.alcoholic ? 'Yes' : 'No' }}</p>
+          </div>
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- INSTRUCTIONS -->
+        <div class="instructions">
+          <h3>Instructions</h3>
+          <p class="m-0">{{ cocktail.instructions }}</p>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</div>

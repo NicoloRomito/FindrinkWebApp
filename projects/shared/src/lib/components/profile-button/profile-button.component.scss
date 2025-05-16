@@ -1,0 +1,191 @@
+.buttons {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 0;
+  // gap: 1rem;
+}
+
+.firstButton {
+  display: flex;
+  justify-content: right;
+  gap: 1rem;
+
+}
+.little-message {
+  block-size: 10mm;
+  display: flex;
+  justify-content: left;
+  align-items: left;
+}
+
+.email-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 8mm;
+  margin-top: 5px;
+
+  label {
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.password-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 20mm;
+
+  label {
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.login-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+
+}
+
+.secondButton {
+  display: flex;
+  justify-content: right;
+  gap: 1rem;
+}
+
+.little-message {
+  block-size: 10mm;
+  display: flex;
+  justify-content: left;
+  align-items: left;
+}
+
+.name-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 14mm;
+
+  label {
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.surname-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 14mm;
+
+  label {
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.birth-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 14mm;
+
+  label {
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.username-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 14mm;
+
+  label {
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.email-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 14mm;
+
+  label {
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.password-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 14mm;
+  margin-bottom: 10px;
+
+  label {
+    font-size: w-24;
+    font-family: semibold;
+  }
+
+  .password-tips {
+    padding-left: 10px;
+    margin-left: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: normal;
+  }
+}
+
+.privacy {
+  display: block;
+  align-items: baseline;
+  gap: 8px;
+  block-size: 14mm;
+  line-height: normal;
+
+  label {
+    margin-left: 10px;
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.profiling {
+  justify-content: space-between;
+  display: block;
+  align-items: baseline;
+  gap: 8px;
+  block-size: 14mm;
+
+  label {
+    margin-left: 10px;
+    font-size: w-24;
+    font-family: semibold;
+  }
+}
+
+.register-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+
+}
+
+.profileButton {
+  // flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

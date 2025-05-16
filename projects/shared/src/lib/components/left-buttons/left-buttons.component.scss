@@ -1,0 +1,21 @@
+
+.left-bar {
+  flex: 1;
+  display: flex;
+  align-items: left;
+  justify-content: flex-start;
+  gap: 1rem;
+  height: auto;
+}
+
+.search-button {
+  margin-top: 12px;
+  width: 100%;
+  max-width: 300px; // Adjust as needed
+}
+
+.create-button {
+  margin-top: 12px;
+  width: 100%;
+  max-width: 400px; // Adjust as needed
+}

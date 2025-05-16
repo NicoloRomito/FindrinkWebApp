@@ -1,0 +1,413 @@
+<ng-container *ngIf="isAdmin() && isLoggedIn(); else notAdmin">
+  <p-toast position="top-center" />
+  <p-confirmDialog />
+  <div class="admin-page">
+    <div class="top-bar">
+      <div class="left-section">
+        <lib-left-buttons></lib-left-buttons>
+      </div>
+      <div class="right-section">
+        <lib-profile-button></lib-profile-button>
+      </div>
+    </div>
+    <div class="admin-container">
+      <div class="layout-wrapper">
+        <!-- * Tab Buttons -->
+        <div class="tab-buttons-column">
+          <p-button
+            label="Pending submissions"
+            [class]="selectedMenu === 'pendingSubmissions' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('pendingSubmissions')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="Cocktail Management"
+            [class]="selectedMenu === 'cocktailManagement' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('cocktailManagement')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="Users Management"
+            [class]="selectedMenu === 'userManagement' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('userManagement')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="Cocktail Statistics"
+            [class]="selectedMenu === 'cocktailStatistics' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('cocktailStatistics')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="User Statistics"
+            [class]="selectedMenu === 'userStatistics' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('userStatistics')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="History Statistics"
+            [class]="selectedMenu === 'historyStats' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('historyStats')"
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            label="Manage Database"
+            [class]="selectedMenu === 'dbManagement' ? 'p-button-primary' : 'p-button-outlined'"
+            (click)="selectMenu('dbManagement')"
+            severity="secondary"
+          ></p-button>
+        </div>
+
+        <!-- * SUBMISSIONS TABLE -->
+        <div class="content-wrapper">
+          <div class="card" *ngIf="selectedMenu === 'pendingSubmissions'">
+            <p-table
+            [value]="cocktailSubmissions"
+            [tableStyle]="{ 'min-width': '80rem', 'gap': '1rem', 'border-radius': '8px' }"
+            [paginator]="true"
+            [rows]="5"
+            [rowsPerPageOptions]="[5, 10, 15]">
+              <ng-template #caption>
+                <div class="table-title">
+                  <span class="table-title">Submitted Cocktails</span>
+                  <p-button icon="pi pi-refresh" rounded raised (click)="refreshList()" />
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="header" class="table-header">
+                <tr>
+                  <th>Name</th>
+                  <th>Image</th>
+                  <th>Category</th>
+                  <th>Glass</th>
+                  <th>Alcoholic</th>
+                  <th>Ingredients</th>
+                  <th>Instructions</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                  <th>Change status</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-cocktail let-rowIndex="rowIndex">
+                <tr>
+                  <td>{{ cocktail.name }}</td>
+                  <td>
+                    <p-image
+                      [src]="cocktail.image"
+                      [alt]="cocktail.name"
+                      class="image-card"
+                      [style]="{ borderRadius: '8px', cursor: 'pointer' }"
+                      width="100"
+                      height="auto"
+                      [preview]="true"
+                    />
+                  </td>
+                  <td>{{ cocktail.category }}</td>
+                  <td>{{ cocktail.glass }}</td>
+                  <td>
+                    <p-tag
+                      [value]="cocktail.isAlcoholic ? 'Yes' : 'No'"
+                      [severity]="'info'"
+                    />
+                  </td>
+                  <td>
+                    <p-button label="Show" severity="secondary" (onClick)="setVisible('ingredient', rowIndex)"></p-button>
+                    <p-dialog
+                      header="Instructions"
+                      [(visible)]="showDialogs[rowIndex].ingredient"
+                      [style]="{ width: '300px' }"
+                      [modal]="true"
+                      [closable]="true"
+                      [dismissableMask]="true"
+                    >
+                    <ul class="list-disc pl-4" [style]="{ listStyleType: 'numbers' }">
+                        <li *ngFor="let ing of cocktail.ingredients" >
+                        {{ ing.name }} ---- {{ ing.quantity }}
+                        </li>
+                    </ul>
+                  </p-dialog>
+                  </td>
+                  <td>
+                    <p-button label="Show" severity="secondary" (onClick)="setVisible('instructions', rowIndex)"></p-button>
+                    <p-dialog
+                      header="Instructions"
+                      [(visible)]="showDialogs[rowIndex].instructions"
+                      [style]="{ width: '50vw' }"
+                      [modal]="true"
+                      [closable]="true"
+                      [dismissableMask]="true">
+                      <p>{{ cocktail.instructions }}</p>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <p-tag [value]="cocktail.status" [severity]="getStatusSeverity(cocktail.status)" />
+                  </td>
+                  <td>{{ cocktail.createdAt | date: 'medium' }}</td>
+                  <td [style]="{ 'margin-top': '5rem' }">
+                    <p-button label="Approve" severity="success" (onClick)="approveSubmission(cocktail.id)"></p-button>
+                    <p-button label="Reject" severity="warn" [style]="{'margin-top': '1rem'}" (onClick)="rejectSubmission(cocktail.id)"></p-button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+          <!-- * COCKTAIL MANAGEMENT -->
+          <div class="cocktail-manage-section" *ngIf="selectedMenu === 'cocktailManagement'">
+            <form [formGroup]="searchForm" class="cocktail-manage-section">
+
+              <div class="search-bar">
+                <p-floatlabel variant="on">
+                  <input pInputText id="search-bar" autocomplete="off" formControlName="filterName" />
+                  <label for="search-bar">Search cocktail</label>
+                </p-floatlabel>
+              </div>
+
+              <div class="cocktail-grid">
+
+                <p-card *ngFor="let card of paginatedResults; let i = index"
+                  [style]="{ width: '200px', overflow: 'hidden' }"
+                >
+                  <ng-template #header>
+                    <p-image
+                    alt="Cocktail card"
+                    class="image-card"
+                      [src]="card.image"
+                      [style]="{ cursor: 'pointer' }"
+                      width="200"
+                      [preview]="true"
+                      >
+                      <ng-template #indicator>
+                        <i class="card-indicator">Open</i>
+                      </ng-template>
+                    </p-image>
+                  </ng-template>
+
+                  <ng-template #title>
+                    <div class="title-container">
+                      <span>{{ card.name }}</span>
+                    </div>
+                  </ng-template>
+                  <ng-template #footer>
+                    <div class="footer-container">
+                      <p-button
+                      label="Edit"
+                      (click)="card.openDialog = true"
+                      [severity]="'info'"
+                      ></p-button>
+                      <p-button
+                      class="del-button"
+                      label="Delete"
+                      (click)="confirmDelete(card.id)"
+                      [severity]="'danger'"
+                      ></p-button>
+                      <p-dialog header="Edit the cocktail you selected" [(visible)]="card.openDialog" [modal]="true" [closable]="true" [style]="{ width: '100%', maxWidth: '1800px' }">
+                        <app-cocktail-create-form
+                        (submitForm)="handleSubmit($event, card.id)">
+                        </app-cocktail-create-form>
+                      </p-dialog>
+                    </div>
+                  </ng-template>
+                </p-card>
+              </div>
+              <div class="cocktail-paginator" *ngIf="cocktailResults.length > 12 && selectedMenu === 'cocktailManagement'">
+                <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="cocktailResults.length" [rowsPerPageOptions]="rowsPerPageOptions" />
+              </div>
+            </form>
+
+          </div>
+
+          <!-- * USERS MANAGEMENT -->
+          <div class="user-management-section" *ngIf="selectedMenu === 'userManagement'">
+            <p-table
+            [value]="userProfiles"
+            [tableStyle]="{ 'min-width': '80rem', 'gap': '1rem', 'border-radius': '8px' }"
+            [paginator]="true"
+            [rows]="5"
+            [rowsPerPageOptions]="[5, 10, 15]">
+              <ng-template #caption>
+              <div class="table-title">
+                <span class="table-title">Users</span>
+                <p-button icon="pi pi-refresh" rounded raised (click)="refreshList()" />
+              </div>
+              </ng-template>
+
+              <ng-template pTemplate="header" class="table-header">
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Birth Date</th>
+                <th>Admin</th>
+                <th>Banned</th>
+                <th>Alcohol Allowed</th>
+                <th>GDPR Consent</th>
+                <th>Profiling Consent</th>
+                <th>Created At</th>
+                <th>Last Login</th>
+                <th>Actions</th>
+              </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-user let-rowIndex="rowIndex">
+              <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.birthDate ? (user.birthDate | date: 'mediumDate') : 'N/A' }}</td>
+                <td>
+                <p-tag [value]="user.isAdmin ? 'Yes' : 'No'" [severity]="user.isAdmin ? 'success' : 'warn'" />
+                </td>
+                <td>
+                <p-tag [value]="user.isBanned ? 'Yes' : 'No'" [severity]="user.isBanned ? 'danger' : 'success'" />
+                </td>
+                <td>
+                <p-tag [value]="user.alcoholAllowed ? 'Yes' : 'No'" [severity]="user.alcoholAllowed ? 'info' : 'warn'" />
+                </td>
+                <td>
+                <p-tag [value]="user.consentGdpr ? 'Yes' : 'No'" [severity]="user.consentGdpr ? 'success' : 'danger'" />
+                </td>
+                <td>
+                <p-tag [value]="user.consentProfiling ? 'Yes' : 'No'" [severity]="user.consentProfiling ? 'info' : 'warn'" />
+                </td>
+                <td>{{ user.createdAt | date: 'mediumDate' }}</td>
+                <td>{{ user.lastLogin | date: 'mediumDate' }}</td>
+                <td>
+                  <p-button label="Change" severity="info" (onClick)="confirmChangeRole(user.id, user.isAdmin)"></p-button>
+                  <p-button label="Ban" severity="danger" (onClick)="confirmBan(user.id)" [style]=" { 'margin-top': '1rem' }"></p-button>
+                </td>
+              </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+          <!-- * COCKTAIL STATISTICS -->
+          <div class="admin-section" *ngIf="selectedMenu === 'cocktailStatistics'">
+            <h2>Cocktail Statistics</h2>
+
+            <ng-container *ngIf="cocktailChartData?.labels?.length; else noStats">
+              <div class="chart-section">
+                <h3>Most Popular Cocktails</h3>
+                <p-chart type="bar" [data]="cocktailChartData" [options]="chartOptions" styleClass="chart"></p-chart>
+              </div>
+
+              <div class="chart-section">
+                <h3>Most Used Glass Types</h3>
+                <p-chart type="doughnut" [data]="glassChartData" [options]="chartOptions" styleClass="chart"></p-chart>
+              </div>
+            </ng-container>
+
+            <ng-template #noStats>
+              <h3>Statistics will be available once enough data has been collected.</h3>
+            </ng-template>
+          </div>
+
+
+
+          <!-- * USER STATISTICS -->
+          <div class="admin-section" *ngIf="selectedMenu === 'userStatistics'">
+            <h2>User Statistics</h2>
+
+            <ng-container *ngIf="userChartData?.datasets?.[0]?.data?.length; else noUserData">
+              <div class="chart-section">
+                <h3>User Distribution</h3>
+                <p-chart type="pie" [data]="userChartData" [options]="chartOptions" styleClass="chart"></p-chart>
+              </div>
+            </ng-container>
+
+            <ng-template #noUserData>
+              <h3 class="no-data">Statistics will be available once enough user data has been collected.</h3>
+            </ng-template>
+          </div>
+
+
+          <!-- * HISTORY STATISTICS -->
+          <div class="admin-section" *ngIf="selectedMenu === 'historyStats'">
+            <h2>Search History Statistics</h2>
+
+            <ng-container *ngIf="historyChartData?.datasets?.[0]?.data?.length; else noHistoryData">
+              <div class="chart-section">
+                <h3>Search Trends Over Time</h3>
+                <p-chart type="line" [data]="historyChartData" [options]="chartOptions" styleClass="chart"></p-chart>
+              </div>
+            </ng-container>
+
+            <ng-template #noHistoryData>
+              <h3 class="no-data">Statistics will be available once users start using the search feature more frequently.</h3>
+            </ng-template>
+          </div>
+
+
+          <!-- * DATABASE MANAGEMENT -->
+          <div class="db-management-section" *ngIf="selectedMenu === 'dbManagement'">
+            <p-panel header="Database Management Instructions" toggleable>
+              <p>
+                Follow these steps to manage the cocktail database:
+                <ol>
+                  <li>Import the full DB from backup file.</li>
+                  <li>Add new ingredients from user submissions.</li>
+                  <li>Import data from external cocktail service.</li>
+                  <li>Reload the DB to update the search engine.</li>
+                </ol>
+            </p-panel>
+
+            <p-divider type="solid">Step 1: Import Backup DB</p-divider>
+            <p-message severity="warn" text="This will override the current database. It may take up to 20 minutes." />
+            <p-button label="Import Database" icon="pi pi-upload" (click)="importDB()" severity="danger" />
+            <p-button label="Check Status" icon="pi pi-info-circle" (click)="getStatusTask(); statusDialog = true" severity="info" />
+
+            <p-dialog header="Import Status" [(visible)]="statusDialog" [modal]="true" [style]="{width: '400px'}">
+              <div *ngIf="statusResponse">
+                <p>Status: {{ statusResponse.status }}</p>
+                <p>Started: {{ statusResponse.startedAt | date: 'medium' }}</p>
+                <p>Completed: {{ statusResponse.completedAt | date: 'medium' }}</p>
+                <p>Records inserted: {{ statusResponse.insertedCount }}</p>
+              </div>
+            </p-dialog>
+
+            <p-divider type="solid">Step 2: Import Submission Ingredients</p-divider>
+            <p-message severity="info" text="This will load all the ingredients in the search engine." />
+            <p-button label="Import Submission Ingredients" icon="pi pi-plus-circle"
+                      (click)="importSubmissionIngredients()" severity="warn" />
+
+            <p-divider type="solid">Step 3: Cocktail Service Import</p-divider>
+            <p-message severity="info" text="You can choose to import each type or all at once." />
+            <div class="cocktail-service-buttons">
+              <p-button label="Import Ingredients" icon="pi pi-database" (click)="importIngredients()" severity="help" />
+                <p-button label="Import Cocktails" icon="pi pi-database" (click)="importCocktails()" severity="help" />
+              <p-button label="Import Ingredient Map" icon="pi pi-map" (click)="importCocktailsWithIngredients()" severity="help" />
+              <p-button label="Import All" icon="pi pi-cloud-download" (click)="importAll()" severity="danger" />
+            </div>
+
+            <p-divider type="solid">Step 4: Reload Search DB</p-divider>
+            <p-message severity="info" text="Use this after importing to update the search engine." />
+            <p-button label="Reload Database" icon="pi pi-refresh" (click)="reloadSearchDatabase()" severity="success" />
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #notAdmin>
+  <p-dialog
+  [header]="dialogHeader"
+  [(visible)]="visible"
+  [style]="{width: 'width', minWidth: 'minWidth', alignItems: 'center'}"
+  closable="false"
+  >
+    <p>You don't have admin rights to access this page</p>
+    <p-button icon="pi pi-sign-in" (click)="redirectHome()" label="Back to home" class="log-btn"></p-button>
+  </p-dialog>
+</ng-template>

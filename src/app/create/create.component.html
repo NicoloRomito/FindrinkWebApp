@@ -1,0 +1,26 @@
+<ng-container *ngIf="userIsLogged(); else notLoggedIn">
+  <p-toast position="top-center"></p-toast>
+  <div class="create-page">
+    <div class="top-bar">
+      <div class="left-section">
+        <lib-left-buttons></lib-left-buttons>
+      </div>
+      <div class="right-section">
+        <lib-profile-button></lib-profile-button>
+      </div>
+    </div>
+    <app-cocktail-create-form
+    (submitForm)="handleSubmit($event)">
+    </app-cocktail-create-form>
+  </div>
+
+</ng-container>
+
+<ng-template #notLoggedIn>
+  <div class="not-logged-message">
+    <p-dialog class="dialog" [header]="dialogHeaderLogIn" [(visible)]="loginVisible" [style]="{width: 'width', minWidth: 'minWidth'}" [closable]="false">
+      <p>Please log in to search for cocktails 🍸</p>
+      <p-button label="Login" icon="pi pi-sign-in" (onClick)="redirectHome()"></p-button>
+    </p-dialog>
+  </div>
+</ng-template>

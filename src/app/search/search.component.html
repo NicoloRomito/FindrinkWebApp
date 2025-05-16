@@ -1,0 +1,100 @@
+<div class="search-container" *ngIf="userIsLogged(); else notLoggedIn">
+
+  <div class="top-bar">
+    <div class="left-section">
+      <lib-left-buttons></lib-left-buttons>
+    </div>
+    <div class="center-section">
+      <div class="search-bar">
+        <form [formGroup]="searchForm" class="search-form">
+          <p-floatlabel variant="on" class="search-label">
+            <p-iconfield iconPosition="left" class="input-wrapper">
+              <p-inputicon>
+                <i class="pi pi-globe"></i>
+              </p-inputicon>
+              <input pInputText formControlName="query" class="search-input" />
+            </p-iconfield>
+            <label for="on_label">Search your cocktail by name</label>
+          </p-floatlabel>
+        </form>
+      </div>
+    </div>
+    <div class="right-section">
+      <!-- theme button -->
+      <!-- language button -->
+      <lib-profile-button></lib-profile-button>
+    </div>
+  </div>
+  <div class="filters">
+    <p-floatlabel variant="on" class="filter-label">
+      <form [formGroup]="searchForm" class="filter-form-horizontal">
+        <p-multiselect [options]="filterOptions['ingredients']" formControlName="ingredients" [placeholder]="placeholders['ingredients']" optionLabel="name" [displaySelectedLabel]="false" />
+        <p-multiselect [options]="filterOptions['glass']" formControlName="glass" [placeholder]="placeholders['glass']" optionLabel="name" [displaySelectedLabel]="false" />
+        <p-multiselect [options]="filterOptions['type']" formControlName="type" [placeholder]="placeholders['type']" optionLabel="name" [displaySelectedLabel]="false" />
+        <p-multiselect *ngIf="alcoholAllowed" [options]="filterOptions['alcoholic']" formControlName="alcoholic" [placeholder]="placeholders['alcoholic']" optionLabel="name" [displaySelectedLabel]="false" />
+      </form>
+    </p-floatlabel>
+    <div class="combined-selected" >
+      <label class="filter-label">Selected Filters:</label>
+      <div class="selected-filters">
+        <p-chip *ngFor="let item of getAllSelectedFilters()" [label]="item" [removable]="true" (onRemove)="removeFilter(item)" on class="span-filter" severity="info">
+        </p-chip>
+      </div>
+    </div>
+  </div>
+  <div class="card-section">
+    <div class="card-grid">
+      <div *ngFor="let card of paginatedResults">
+        <p-card [style]="{ width: '300px', overflow: 'hidden' }">
+          <ng-template #header>
+            <!-- <p-skeleton></p-skeleton> -->
+            <p-image
+              alt="Cocktail card"
+              class="image-card"
+              [src]="card.image"
+              [style]="{'cursor': 'pointer'}"
+              width="300"
+              [preview]="true"
+              (click)="displayCardPage(card.id)"
+              >
+              <ng-template #indicator>
+                <i class="card-indicator" [textContent]="imageCardText"></i>
+              </ng-template>
+            </p-image>
+          </ng-template>
+          <ng-template #title>
+            <div class="title-container">
+              <span>{{ card.title }}</span>
+              <p-button
+                class="fav-button"
+                [icon]="card.isFavorite === true ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                [style]="{ color: 'red' }"
+                (click)="manageFavorite(card)"
+                styleClass="w-full"
+                [severity]="'secondary'"
+              />
+            </div>
+          </ng-template>
+          <ng-template #footer>
+            <div>
+              <!-- TODO: add cretated by -->
+              <!-- <p-avatar></p-avatar> -->
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="searchResults && searchResults.length > 0" class="paginator">
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="searchResults.length" [rowsPerPageOptions]="[10, 15, 20]" />
+  </div>
+</div>
+
+<ng-template #notLoggedIn>
+  <div class="not-logged-message">
+    <p-dialog class="dialog" [header]="dialogHeader" [(visible)]="visible" [style]="{width: 'width', minWidth: 'minWidth'}" [closable]="false">
+      <p>Please log in to search for cocktails 🍸</p>
+      <p-button label="Login" icon="pi pi-sign-in" (onClick)="redirectHome()"></p-button>
+    </p-dialog>
+  </div>
+</ng-template>

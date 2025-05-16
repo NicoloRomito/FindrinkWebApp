@@ -1,0 +1,136 @@
+<p-toast position="top-center" />
+<div class="buttons">
+  <div class="firstButton">
+    <p-button *ngIf="!visibles['isLoggedIn']" (click)="setLoginVisible()" [label]="loginButton" severity="primary">
+    </p-button>
+    <p-dialog [header]="loginButton" [modal]="true" [(visible)]="visibles['loginDialogVisible']" (onHide)="resetForm()" [style]="{ width: '25rem' }" [contentStyle]="{ 'overflow': 'visible' }" [baseZIndex]="10000" [autoZIndex]="true">
+      <span class="little-message">{{messages['login']}}</span>
+      <div class="email-space">
+        <p-floatlabel variant="on">
+          <form [formGroup]="loginForm">
+            <input pInputText formControlName="email" id="email" autocomplete="off" />
+          </form>
+          <label for="on_label">{{ labels['email'] }}</label>
+        </p-floatlabel>
+      </div>
+      <div class="password-space">
+        <p-floatlabel variant="on">
+          <form [formGroup]="loginForm">
+            <p-password formControlName="password" name="password" id="password" [toggleMask]="true" [feedback]="false" autocomplete="off" />
+          </form>
+          <label for="on_label">{{ labels['password']}} </label>
+        </p-floatlabel>
+      </div>
+      <div class="login-buttons">
+          <p-button label="Cancel" severity="secondary" (click)="setLoginVisible()" />
+          <p-button [label]="loginButton" severity="primary" (click)="sendLoginData()" />
+      </div>
+    </p-dialog>
+  </div>
+  <div class="secondButton">
+    <p-button *ngIf="!visibles['isLoggedIn']" (click)="setRegisterVisible()" [label]="registerButton" severity="help" />
+    <p-dialog
+      [header]="registerButton"
+      [modal]="true"
+      [(visible)]="visibles['registerDialogVisible']"
+      [style]="{ width: '25rem'}"
+      [contentStyle]="{ 'overflow': 'visible' }"
+      [baseZIndex]="10000"
+      [autoZIndex]="true"
+      (onHide)="resetForm()">
+      <span class="little-message">{{messages['register']}}</span>
+      <div class="name-space">
+          <p-floatlabel variant="on">
+            <form [formGroup]="registerForm">
+              <input pInputText formControlName="name" name="name" id="name" autocomplete="off" />
+            </form>
+            <label for="on_label">{{ labels['name'] }}</label>
+        </p-floatlabel>
+        </div>
+        <div class="surname-space">
+          <p-floatlabel variant="on">
+            <form [formGroup]="registerForm">
+              <input pInputText formControlName="surname" name="surname" id="surname" autocomplete="off" />
+            </form>
+            <label for="on_label">{{labels['surname']}}</label>
+          </p-floatlabel>
+        </div>
+        <div class="birth-space">
+          <p-floatlabel variant="on">
+            <form [formGroup]="registerForm">
+              <p-datepicker formControlName="birthDate" view="month" dateFormat="mm/yy" [readonlyInput]="true" />
+            </form>
+            <label for="on_label">{{labels['birthDate']}}</label>
+          </p-floatlabel>
+        </div>
+        <div class="username-space">
+          <p-floatlabel variant="on">
+            <form [formGroup]="registerForm">
+              <input pInputText formControlName="username" name="username" id="username" autocomplete="off" />
+            </form>
+            <label for="on_label">{{labels['username']}}</label>
+          </p-floatlabel>
+        </div>
+        <div class="email-space">
+          <p-floatlabel variant="on">
+            <form [formGroup]="registerForm">
+              <input pInputText formControlName="email" name="email" id="email" autocomplete="off" />
+            </form>
+            <label for="on_label">{{labels['email']}}</label>
+          </p-floatlabel>
+        </div>
+        <div class="password-space">
+          <p-floatlabel variant="on">
+            <form [formGroup]="registerForm">
+              <p-password formControlName="password" name="password" id="password" [toggleMask]="true" autocomplete="off">
+                <ng-template #footer>
+                  <p-divider />
+                  <ul class="password-tips">
+                    <li>{{passwordTips['lowerCase']}} </li>
+                    <li>{{passwordTips['upperCase']}} </li>
+                    <li>{{passwordTips['number']}} </li>
+                    <li>{{passwordTips['minLength']}} </li>
+                  </ul>
+                </ng-template>
+              </p-password>
+            </form>
+            <label for="on_label">{{labels['password']}} </label>
+          </p-floatlabel>
+        </div>
+        <div class="privacy">
+          <form class="privacy-form" [formGroup]="privacyForm">
+            <p-checkbox formControlName="privacyCheck" binary="true" value="Consense" inputId="privacyForm" />
+            <label for="privacyForm">{{messages['GDPR']}}</label>
+          </form>
+        </div>
+        <div class="profiling">
+          <form [formGroup]="privacyForm">
+            <p-checkbox formControlName="profilingCheck" binary="true" value="Profiling" inputId="profilingForm" />
+            <label for="profilingForm">{{messages['profiling']}}</label>
+          </form>
+        </div>
+      <div class="register-buttons">
+          <p-button label="Cancel" severity="secondary" (click)="setRegisterVisible()" />
+          <p-button [label]="registerButton" severity="primary" [disabled]="privacyForm.invalid" (click)="sendRegisterData()"/>
+      </div>
+    </p-dialog>
+  </div>
+  <div class="profileButton" *ngIf="visibles['isLoggedIn']">
+    <p-split-button class="profile-menu" label="Profile" (onClick)="toProfile()" [model]="items" />
+    <p-dialog
+      header="Privacy Policy"
+      [(visible)]="visibles['privacyDialogVisible']"
+      [modal]="true"
+      [style]="{ width: '40rem' }"
+      [dismissableMask]="true"
+      [closable]="true">
+      <div class="privacy-content">
+        <p><strong>{{ lastUpdated }}</strong></p>
+        <p *ngFor="let section of sections">
+          {{ section }}
+        </p>
+      </div>
+    </p-dialog>
+  </div>
+</div>
+

@@ -1,0 +1,57 @@
+<ng-container *ngIf="userIsLogged(); else notLogged">
+  <div class="card-page">
+    <div class="top-bar">
+      <div class="left-section">
+        <lib-left-buttons></lib-left-buttons>
+      </div>
+      <div class="right-section">
+        <lib-profile-button></lib-profile-button>
+      </div>
+    </div>
+    <shared-cocktail-card
+    *ngIf="cocktailInfo.id"
+    [cocktail]="cocktailInfo"
+    [isFavorite]="isFavoriteCocktail"
+    (favoriteToggled)="manageFavorites()"
+    ></shared-cocktail-card>
+  </div>
+  <div class="history-carousel" *ngIf="randomCocktails.length > 0 || recommendedCocktails.length > 0">
+    <h3 class="carousel-title">Most loved</h3>
+    <p-carousel
+      [value]="recommendedCocktails.length > 0 ? recommendedCocktails : randomCocktails"
+      [numVisible]="5"
+      [numScroll]="3"
+      [circular]="true"
+      [responsiveOptions]="responsiveOptions"
+      [autoplayInterval]="3000"
+    >
+    <ng-template let-cocktail #item>
+      <div class="carousel-card">
+        <div class="carousel-image-container">
+          <div class="carousel-image-wrapper">
+            <img
+              [src]="cocktail.image"
+              [alt]="cocktail.name"
+              class="carousel-image"
+              (click)="goToCocktail(cocktail.id)"
+            />
+          </div>
+        </div>
+        <div class="carousel-name">{{ cocktail.name }}</div>
+      </div>
+    </ng-template>
+  </p-carousel>
+
+  </div>
+
+</ng-container>
+
+
+<ng-template #notLogged>
+  <div class="not-logged-message">
+    <p-dialog class="dialog" [header]="dialogHeader" [(visible)]="visible" [style]="{width: 'width', minWidth: 'minWidth'}" [closable]="false">
+      <p>Please log in to search for cocktails 🍸</p>
+      <p-button label="Login" icon="pi pi-sign-in" (onClick)="redirectHome()"></p-button>
+    </p-dialog>
+  </div>
+</ng-template>
