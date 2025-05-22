@@ -5,12 +5,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AuthService } from '../../services/auth.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Image } from 'primeng/image';
 
 @Component({
   selector: 'lib-left-buttons',
-  imports: [ButtonModule, CommonModule, InputTextModule,
-            FormsModule, ReactiveFormsModule
-            ],
+  imports: [
+    ButtonModule, CommonModule, InputTextModule,
+    FormsModule, ReactiveFormsModule, Image
+  ],
   standalone: true,
   templateUrl: './left-buttons.component.html',
   styleUrl: './left-buttons.component.scss'

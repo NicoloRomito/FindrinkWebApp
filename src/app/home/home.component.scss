@@ -2,13 +2,12 @@ html, body, .home-page {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica Neue', sans-serif;
 }
 
 .home-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 95vh;
   overflow-x: hidden;
 }
 
@@ -39,23 +38,97 @@ html, body, .home-page {
     flex: 1;
     text-align: center;
   }
+
+  @media (max-width: 1400px) {
+
+  }
+
+  @media (max-width: 1200px) {
+
+  }
+
+  @media (max-width: 1024px) {
+
+  }
+
+  @media (max-width: 600px) {
+
+  }
+
+  @media (max-width: 400px) {
+    padding: 6px 12px;
+
+    .left-section,
+    .center-section,
+    .right-section {
+      justify-content: center;
+      flex: 1 1 100%;
+      text-align: center;
+    }
+  }
 }
 
 .title-container {
   text-align: center;
-  margin: 2rem 0 1rem;
+  margin: 0.5rem 0 1rem;
 
   .title {
     font-size: 2.8rem;
     font-weight: bold;
-    color: #aaa9a9;
+    color: #ffffff;
   }
 
   .motion-title {
     font-size: 1.6rem;
     font-weight: 500;
-    color: #555;
+    color: #0068ff;
     margin-top: 0.5rem;
+  }
+
+  @media (max-width: 1400px) {
+    .title {
+      font-size: 2.4rem;
+    }
+    .motion-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .title {
+      font-size: 2.2rem;
+    }
+    .motion-title {
+      font-size: 1.4rem;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .title {
+      font-size: 2rem;
+    }
+    .motion-title {
+      font-size: 1.3rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .title {
+      font-size: 1.8rem;
+    }
+    .motion-title {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .title {
+      font-size: 1.6rem;
+    }
+
+    .motion-title {
+      font-size: 1rem;
+    }
   }
 }
 
@@ -68,15 +141,36 @@ html, body, .home-page {
   margin: 0 auto;
 
   @media (max-width: 1400px) {
-    column-count: 4;
+    column-count: 5;
+    column-gap: 1rem;
+    padding: 1rem;
+    max-width: 1300px;
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
+    column-count: 5;
+    padding: 0.75rem;
+  }
+
+  @media (max-width: 1024px) {
     column-count: 2;
+    max-height: calc(4 * 250px + 1rem); // 2 rows × item height
+    padding: 0.5rem;
   }
 
   @media (max-width: 600px) {
-    column-count: 1;
+    column-count: 2;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 400px) {
+    column-count: 2;
+    padding: 0.25rem;
+    max-height: calc(4 * 150px + 1rem); // 2 rows × item height
+
+    .image-item {
+      margin-bottom: 0.5rem;
+    }
   }
 }
 

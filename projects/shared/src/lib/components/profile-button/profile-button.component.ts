@@ -85,6 +85,8 @@ export class ProfileButtonComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
 
+  buttonWidth: string = window.innerWidth <= 400 ? '100%' : 'auto';
+
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,

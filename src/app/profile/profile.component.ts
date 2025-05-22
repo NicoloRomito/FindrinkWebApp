@@ -229,8 +229,16 @@ export class ProfileComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         this.passwordDialog = false;
+        this.authService.login(this.user.email, this.passwordForm.value.confirmPassword).subscribe({
+          next: (response) => {
+            this.authService.saveTokens(response.token, response.refreshToken.toString(), response.userId);
+            this.authService.refresh(this.authService.getRefreshToken()!);
+          },
+          error: (error) => {
+            console.error('Error fetching user profile data', error);
+          }
+        });
         this.passwordForm.reset();
-        this.authService.refresh(this.authService.getRefreshToken()!);
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -395,14 +403,22 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  displayCardPage(name: string) {
-    const userId = this.authService.getUserId();
-    this.searchService.getCocktailByCreator(userId!, name)
-      .subscribe((response: any) => {
-        const cocktailId = response.cocktailId;
-        this.historyService.addToHistory([{ filterType: 'cocktail', filterName: cocktailId }], 'search');
-        this.router.navigate(['/card'], { queryParams: { cocktailId: cocktailId } });
-      });
+  displayCardPage(cocktailId?: string, name?: string) {
+    if (name && cocktailId === undefined) {
+      const userId = this.authService.getUserId();
+      this.searchService.getCocktailByCreator(userId!, name)
+        .subscribe((response: any) => {
+          const cocktailId = response.cocktailId;
+          this.authService.getProfiling().subscribe((profiling: boolean) => {
+            if (profiling) {
+              this.historyService.addToHistory([{ filterType: 'cocktail', filterName: cocktailId }], 'search');
+            }
+          });
+          this.router.navigate(['/card'], { queryParams: { cocktailId: cocktailId } });
+        });
+    } else if (cocktailId && name === undefined) {
+      this.router.navigate(['/card'], { queryParams: { cocktailId: cocktailId } });
+    }
   }
 
   userIsLogged(): boolean {

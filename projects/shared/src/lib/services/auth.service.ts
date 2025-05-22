@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, map, Observable} from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
@@ -82,22 +82,18 @@ export class AuthService {
     return sessionStorage.getItem('userId');
   }
 
-  getProfiling(): boolean {
+  getProfiling(): Observable<boolean> {
     const userId = this.getUserId();
-    this.http.get(`${this.profileAPI}${userId}`).subscribe((response: any ) => {
-      const consentProfiling = response.consentProfiling;
-      return consentProfiling;
-    });
-    return false;
+    return this.http.get(`${this.profileAPI}${userId}`).pipe(
+      map((response: any) => response.consentProfiling)
+    );
   }
 
-  getAlcoholAllowed(): boolean {
+  getAlcoholAllowed(): Observable<boolean> {
     const userId = this.getUserId();
-    this.http.get(`${this.profileAPI}${userId}`).subscribe((response: any ) => {
-      const alcoholAllowed = response.alcoholAllowed;
-      return alcoholAllowed;
-    });
-    return false;
+    return this.http.get(`${this.profileAPI}${userId}`).pipe(
+      map((response: any) => response.alcoholAllowed)
+    );
   }
 
   getJwtToken(): string | null {

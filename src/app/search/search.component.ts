@@ -61,8 +61,6 @@ export class SearchComponent implements OnInit {
   searchResults: SearchResult[] = [];
   paginatedResults: SearchResult[] = [];
 
-  alcoholAllowed: boolean = false;
-
   // * dialog not logged in
   visible: boolean = true;
   dialogHeader: string = 'Cannot access to this page';
@@ -86,6 +84,7 @@ export class SearchComponent implements OnInit {
 
   query: string = '';
   noResultsFound: boolean = false;
+  alcoholAllowed: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -108,8 +107,8 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.getAlcoholAllowed())
-      this.alcoholAllowed = true;
+
+    this.alchoholicAllowed();
 
     this.route.queryParams.subscribe(params => {
       if (params['first'] === 'true') {
@@ -165,8 +164,10 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  alchoholicAllowed(): boolean {
-    return this.authService.getAlcoholAllowed();
+  alchoholicAllowed(): void {
+    this.authService.getAlcoholAllowed().subscribe((allowed: boolean) => {
+      this.alcoholAllowed = allowed;
+    });
   }
 
   userIsLogged(): boolean {
@@ -242,7 +243,11 @@ export class SearchComponent implements OnInit {
           isFavorite: this.isFavorite(item.cocktailId)
         }));
 
-        this.historyService.addToHistory(this.SearchInput.filters, 'search');
+        this.authService.getProfiling().subscribe((response: boolean) => {
+          if (response) {
+            this.historyService.addToHistory(this.SearchInput.filters, 'search');
+          }
+        });
         this.displayResults();
       });
   }
@@ -266,7 +271,11 @@ export class SearchComponent implements OnInit {
   }
 
   displayCardPage(id: string) {
-    this.historyService.addToHistory(this.SearchInput.filters, 'select');
+    this.authService.getProfiling().subscribe((response: boolean) => {
+      if (response) {
+        this.historyService.addToHistory(this.SearchInput.filters, 'select');
+      }
+    });
     this.router.navigate(['/card'], { queryParams: { cocktailId: id} });
   }
 }

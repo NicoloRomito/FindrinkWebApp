@@ -135,7 +135,7 @@
                 [style]="{ cursor: 'pointer' }"
                 width="300"
                 [preview]="true"
-                (click)="displayCardPage(card.id)"
+                (click)="displayCardPage(card.id, undefined)"
                 >
                 <ng-template #indicator>
                   <i class="card-indicator">Open</i>
@@ -179,7 +179,7 @@
                 width="350"
                 height="auto"
                 [preview]="true"
-                (click)="card.status === 'Approved' ? displayCardPage(card.name) : ''"
+                (click)="card.status === 'Approved' ? displayCardPage(undefined, card.name) : ''"
               >
                 <ng-template #indicator>
                   <i class="card-indicator" [textContent]="'Open'"></i>

@@ -1,21 +1,116 @@
-
 .left-bar {
   flex: 1;
   display: flex;
-  align-items: left;
+  align-items: flex-start;
   justify-content: flex-start;
-  gap: 1rem;
+  gap: 0.5rem;
   height: auto;
-}
 
-.search-button {
-  margin-top: 12px;
-  width: 100%;
-  max-width: 300px; // Adjust as needed
-}
+  .logo-home-button {
+    width: 150px;
+    height: auto;
+    cursor: pointer;
 
-.create-button {
-  margin-top: 12px;
-  width: 100%;
-  max-width: 400px; // Adjust as needed
+    ::ng-deep p-image {
+      width: 150px !important;
+      height: auto;
+    }
+
+    ::ng-deep img {
+      width: 150px !important;
+      height: auto;
+    }
+  }
+
+  .search-button {
+    margin-top: 12px;
+    width: 100%;
+    max-width: 300px; // Adjust as needed
+  }
+
+  .create-button {
+    margin-top: 12px;
+    width: 100%;
+    max-width: 400px; // Adjust as needed
+  }
+
+  @media (max-width: 600px) {
+    max-width: 200px;
+
+    .logo-home-button {
+      width: 80px;
+      height: auto;
+
+      ::ng-deep img {
+        margin-top: 8px;
+        width: 80px !important;
+        height: auto;
+      }
+    }
+
+    .search-button,
+    .create-button {
+      margin-top: 5px;
+      max-width: 100px !important;
+      ::ng-deep button {
+        width: 75px !important;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.6rem;
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    max-width: 200px;
+
+    .logo-home-button {
+      width: 70px;
+      height: auto;
+
+      ::ng-deep img {
+        margin-top: 8px;
+        width: 70px !important;
+        height: auto;
+        gap: 1rem;
+      }
+    }
+
+    .search-button,
+    .create-button {
+      margin-top: 5px;
+      max-width: 100px !important;
+      ::ng-deep button {
+        width: 60px !important;
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+      }
+    }
+  }
+
+  @media (max-width: 400px) {
+    max-width: 200px;
+
+    .logo-home-button {
+      width: 60px;
+      height: auto;
+
+      ::ng-deep img {
+        margin-top: 8px;
+        width: 60px !important;
+        height: auto;
+        gap: 1rem;
+      }
+    }
+
+    .search-button,
+    .create-button {
+      margin-top: 5px;
+      max-width: 100px !important;
+      ::ng-deep button {
+        width: 50px !important;
+        font-size: 0.70rem;
+        padding: 0.4rem 0.6rem;
+      }
+    }
+  }
 }

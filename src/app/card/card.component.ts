@@ -77,21 +77,25 @@ export class CardComponent implements OnInit {
         }));
       });
 
-  this.favoriteService.getRecommendedCocktails()
-    .subscribe((response: Recommended[]) => {
-    this.recommendedCocktails = response;
-    this.recommendedCocktails.forEach((item: Recommended) => {
-      this.searchService.getSingleCocktail(item.id)
-      .subscribe((cocktail: any) => {
-        this.recommended.push({
-        id: cocktail.cocktailId,
-        name: cocktail.name,
-        image: cocktail.imageUrl,
-        likes: item.likes
+    this.authService.getProfiling().subscribe((response: boolean) => {
+      if (response) {
+        this.favoriteService.getRecommendedCocktails()
+          .subscribe((response: Recommended[]) => {
+          this.recommendedCocktails = response;
+          this.recommendedCocktails.forEach((item: Recommended) => {
+            this.searchService.getSingleCocktail(item.id)
+            .subscribe((cocktail: any) => {
+              this.recommended.push({
+              id: cocktail.cocktailId,
+              name: cocktail.name,
+              image: cocktail.imageUrl,
+              likes: item.likes
+              });
+            });
+          });
         });
-      });
+      }
     });
-  });
 
     // * call the cocktail API
     this.getCocktail(this.cocktailInfo.id);
@@ -100,7 +104,7 @@ export class CardComponent implements OnInit {
     this.responsiveOptions = [
       {
           breakpoint: '1400px',
-          numVisible: 2,
+          numVisible: 3,
           numScroll: 1
       },
       {
@@ -115,8 +119,13 @@ export class CardComponent implements OnInit {
       },
       {
           breakpoint: '575px',
-          numVisible: 1,
+          numVisible: 2,
           numScroll: 1
+      },
+      {
+        breakpoint: '400px',
+        numVisible: 1,
+        numScroll: 1
       }
     ];
 
