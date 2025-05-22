@@ -50,7 +50,7 @@ export class AboutComponent {
       initials: 'SM',
       tagline : 'Backend & Data Engineer',
       bio     : 'Passionate about microservices, data pipelines and DevOps.',
-      linkedin: 'linkedin www.linkedin.com/in/42-smontuor',
+      linkedin: 'https://www.linkedin.com/in/42-smontuor',
       github  : 'https://github.com/CapSte42',
       email   : 'smontuor@student.42firenze.it',
     },
