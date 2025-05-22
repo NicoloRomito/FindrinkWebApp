@@ -25,6 +25,15 @@
 .history-carousel {
   margin-top: 2rem;
 
+  @media (max-width: 400px) {
+    .carousel-card {
+      width: 250px;
+    }
+
+    ::ng-deep img {
+      width: 200px;
+    }
+  }
   .carousel-title {
     text-align: center;
     margin-bottom: 1rem;
@@ -40,8 +49,9 @@
     transition: transform 0.3s;
     cursor: pointer;
 
+
     &:hover {
-      transform: scale(1.02);
+      transform: scale(1);
     }
   }
 }

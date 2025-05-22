@@ -8,6 +8,7 @@
         <p-button
           class="favorite-btn"
           [icon]="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+          [style]="{ color: 'red' }"
           (click)="toggleFavorite()">
         </p-button>
 
@@ -16,7 +17,7 @@
             alt="Cocktail"
             class="image-card"
             [src]="cocktail.image"
-            width="450">
+            >
           </p-image>
         </div>
       </div>

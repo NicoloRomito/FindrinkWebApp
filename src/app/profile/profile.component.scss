@@ -146,6 +146,11 @@ input,
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   justify-content: center;
   padding: 1rem 0;
+
+  ::ng-deep img, p-card {
+    width: 300px;
+    height: auto;
+  }
 }
 
 .title-container {
@@ -210,4 +215,123 @@ input,
   background-color: #000000;
   border: none;
 }
+
+/* ────────────────────────────────────────────────────────────────
+   PROFILE — mobile & tablet (≤ 1024 px)
+   ────────────────────────────────────────────────────────────────*/
+@media (max-width: 1024px) {
+
+  /* 1️⃣  Global container switches to vertical flow */
+  .profile-page .layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-inline: clamp(0.5rem, 4vw, 1.5rem);
+  }
+
+  /* 2️⃣  Top bar already full-width — no change needed */
+
+  /* 3️⃣  TAB BUTTONS — horizontal scroll strip  */
+  .tab-buttons-column {
+    display: flex;
+    flex-direction: row;
+    //overflow-x: auto;
+    //padding-block: .5rem;
+
+    /* keep touch scrolling sleek */
+    scrollbar-width: none;          /* Firefox */
+    &::-webkit-scrollbar { display: none; }
+
+    /* make each button elastic so four fit on most phones */
+    p-button,
+    ::ng-deep button.p-button {
+      flex: 0 1 clamp(6rem, 24vw, 10rem);  /* 6-10 rem, fluid in-between  */
+    }
+    .details-btn,
+    .favorites-btn {
+      margin-bottom: 1rem;
+    }
+  }
+
+  /* 4️⃣  CONTENT AREA — fills the screen */
+  .content-wrapper { width: 100%; }
+
+  /* 5️⃣  DETAILS CARD — form fields full-width                      */
+  .details-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .form-group { flex: 1 1 100%; }
+  }
+
+  /* buttons stack on small screens */
+  .changes-btn,
+  .password-btn {
+    display: flex;
+    flex-direction: row;
+    gap: .75rem;
+    align-items: stretch;
+  }
+
+  .password-group {
+    ::ng-deep input {
+      width: 300px;
+    }
+  }
+
+  /* 6️⃣  FAVORITES & SUBMITTED GRIDS — fluid masonry-like grid      */
+  .favorites-grid,
+  .submitted-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  /* override fixed card widths added inline                         */
+  .favorites-grid  p-card,
+  .submitted-grid  p-card { width: 100% !important; }
+
+  /* image previews scale automatically                              */
+  .image-card,
+  ::ng-deep p-image img { width: 100% !important; height: auto; }
+
+  /* title + favourite icon stay on one row, wrap if needed          */
+  .title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    flex-wrap: wrap;
+
+    span         { flex: 1 1 auto; }
+    .fav-button  { flex: 0 0 auto; }
+  }
+
+  /* 7️⃣  PAGINATOR — centre & give breathing-room                   */
+  .paginator { margin-block: 1rem; text-align: center; }
+
+  /* 8️⃣  DIALOGS — never taller/wider than the viewport             */
+  ::ng-deep .p-dialog {
+    max-width : 95vw !important;
+    max-height: 90vh !important;
+  }
+
+  /* 9️⃣  “Not logged” dialog width fix                              */
+  .not-logged-message .dialog { width: 90vw !important; }
+
+  /* 🔟  FAVORITE-HEART overlay in card header (if any)             */
+  .image-card .fav-button,
+  .image-card .fav-btn,
+  .image-card .p-button-icon-only {
+    position: absolute;
+    inset-block-start: clamp(.5rem, 2vw, 1rem);
+    inset-inline-end : clamp(.5rem, 2vw, 1rem);
+    z-index: 3;
+    width : clamp(32px, 8vw, 44px);
+    height: clamp(32px, 8vw, 44px);
+    border-radius: 50%;
+  }
+}
+
 

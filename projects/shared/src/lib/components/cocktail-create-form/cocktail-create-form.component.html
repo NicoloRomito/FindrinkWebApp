@@ -9,7 +9,7 @@
   </div>
 
 
-  <p-card class="cocktail-card" [style]="{ overflow: 'hidden' }">
+  <p-card class="cocktail-card" >
     <div class="card-content">
       <!-- Left: Image -->
 
@@ -19,7 +19,7 @@
           <div class="image-wrapper">
             <!-- Optional: Image preview -->
             <div *ngIf="selectedForm.value.image" class="image-preview">
-              <p-image [src]="selectedForm.value.image" alt="Image Preview" width="350" />
+              <p-image [src]="selectedForm.value.image" alt="Image Preview" width="300" />
             </div>
           </div>
 
@@ -50,34 +50,30 @@
               </p-fluid>
 
               <div class="p-inputgroup" [formGroup]="selectedForm">
-                <p-button icon="pi pi-image" label="Search for an image" severity="secondary" (click)="openImageSearch()" [style]="{ width: '200px'}"></p-button>
+                <p-button icon="pi pi-image" label="Search for an image" severity="secondary" (click)="openImageSearch()" ></p-button>
                 <p-dialog
                   [(visible)]="imageDialog"
                   header="Search the image by typing the cocktail's name"
+                  styleClass="image-dialog"
                   [modal]="true"
                   [closable]="true"
-                  [style]="{ 'max-width': '1500px', width: '100%',
-                    height: '100%', gap: '0.5rem', margin: '1rem',
-                    background: 'black', display: 'flex',
-                  }"
                   >
                   <div class="search-bar">
                     <p-float-label variant="in">
-                      <input type="text" pInputText formControlName="image" />
-                      <label for="on_label">Search image</label>
+                      <input type="text" pInputText id="search" formControlName="image" />
+                      <label for="search">Search image</label>
                     </p-float-label>
                     <p-button icon="pi pi-times" severity="secondary" label="Clear" (click)="selectedForm.get('image')?.setValue('')"></p-button>
                   </div>
                   <div class="images-grid">
-                    <p-card *ngFor="let image of images" [style]="{ width: '200px', height: 'auto' }" (click)="selectImage(image.url)">
+                    <p-card *ngFor="let image of images" (click)="selectImage(image.url)">
                       <ng-template #header>
                         <p-image
                         alt="Cocktail Image"
                         class="image-card"
                         [src]="image.url"
-                        [style]="{ cursor: 'pointer', 'border-radius': '0.5rem' }"
-                        width="200"
                         [preview]="true"
+                        width="200"
                         >
                           <ng-template #indicator>
                             <i class="card-indicator">Choose</i>
@@ -124,16 +120,16 @@
                               <p-select [options]="filterOptions['measures']" formControlName="measure" [placeholder]="placeholders['measure']" optionLabel="name" [showClear]="true"  />
 
                               <p-button icon="pi pi-plus" (click)="openIngredientDialog(index)" class="p-button-sm"></p-button>
-                            </div>
-                          </ng-container>
+                          </div>
+                        </ng-container>
 
-                          <ng-template #customIngredient>
-                            <div class="ingredient-controls">
-                              <input type="text" pInputText formControlName="name" class="new-ingredient" />
-                              <input type="text" pInputText formControlName="quantity" class="new-quantity" />
-                              <p-button icon="pi pi-times" (click)="removeIngredient(index)" class="p-button-sm"></p-button>
-                            </div>
-                          </ng-template>
+                        <ng-template #customIngredient>
+                          <div class="ingredient-controls">
+                            <input type="text" pInputText formControlName="name" class="new-ingredient" />
+                            <input type="text" pInputText formControlName="quantity" class="new-quantity" />
+                            <p-button icon="pi pi-times" (click)="removeIngredient(index)" class="p-button-sm"></p-button>
+                          </div>
+                        </ng-template>
                       </div>
 
                     </div>

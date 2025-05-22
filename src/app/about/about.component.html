@@ -1,0 +1,131 @@
+<div class="top-bar">
+  <div class="left-section">
+    <lib-left-buttons></lib-left-buttons>
+  </div>
+  <div class="center-section">
+
+  </div>
+  <div class="right-section">
+    <lib-profile-button></lib-profile-button>
+  </div>
+</div>
+
+<!--  FinDrink · About  -->
+<p-toast></p-toast>  <!-- one toast outlet for the whole app -->
+
+<section class="about-page">
+
+  <!-- 1 ▸ Intro ----------------------------------------------------------->
+  <p-card class="hero-card">
+    <ng-template pTemplate="content">
+      <h1 class="p-text-center">
+        About <span class="brand">FinDrink</span>
+      </h1>
+      <p class="p-text-center">
+        FinDrink began life as an <strong>intensive two-month challenge</strong>
+        at <em>&nbsp;42 Florence Coding School</em>. Two developers, boundless passion and
+        an alarming amount of coffee built a snappy, modern way to
+        <u>discover, create and collect cocktails</u>.
+      </p>
+    </ng-template>
+  </p-card>
+
+  <p-divider></p-divider>
+
+  <!-- 2 ▸ Team ------------------------------------------------------------->
+  <p-panel header="Meet the Team" styleClass="team-panel">
+    <div class="p-grid p-justify-center p-lg-justify-start p-ai-stretch p-gap-3 p-mt-3">
+      <div
+        class="p-col-12 p-sm-6 p-md-4 p-lg-3"
+        *ngFor="let m of team"
+      >
+        <p-card>
+          <!-- header -->
+          <ng-template pTemplate="header">
+            <div class="p-d-flex p-jc-center p-mb-2">
+              <p-avatar
+                shape="circle"
+                size="xlarge"
+                [label]="m.initials"
+                class="avatar"
+              ></p-avatar>
+            </div>
+            <h3 class="p-text-center">{{ m.fullName }}</h3>
+            <p class="p-text-center p-text-secondary">{{ m.tagline }}</p>
+          </ng-template>
+
+          <!-- content -->
+          <p class="p-mb-3">{{ m.bio }}</p>
+
+          <!-- footer -->
+          <ng-template pTemplate="footer">
+            <div class="p-d-flex p-jc-center p-ai-center p-gap-2 links">
+              <a
+                *ngIf="m.linkedin"
+                [href]="m.linkedin"
+                target="_blank"
+                pButton
+                icon="pi pi-linkedin"
+                class="p-button-rounded p-button-text p-button-secondary"
+                aria-label="LinkedIn"
+              ></a>
+
+              <a
+                *ngIf="m.github"
+                [href]="m.github"
+                target="_blank"
+                pButton
+                icon="pi pi-github"
+                class="p-button-rounded p-button-text p-button-secondary"
+                aria-label="GitHub"
+              ></a>
+
+              <button
+                *ngIf="m.email"
+                pButton
+                type="button"
+                icon="pi pi-envelope"
+                class="p-button-rounded p-button-text p-button-secondary"
+                (click)="copyEmail(m.email)"
+                aria-label="Copy e-mail"
+              ></button>
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+    </div>
+  </p-panel>
+
+  <p-divider></p-divider>
+
+  <!-- 3 ▸ Mission ---------------------------------------------------------->
+  <p-panel header="Our Mission">
+    <p class="p-mt-3 p-text-center line-length">
+      We want FinDrink to become <strong>the go-to hub</strong> for cocktail
+      lovers and the simply curious alike: a place to explore new flavour
+      combinations, save personal favourites and—why not—pick up a few
+      mixology skills along the way. <br>
+      We hope you enjoy your stay!
+    </p>
+  </p-panel>
+
+  <p-divider></p-divider>
+
+  <!-- 4 ▸ Contact ---------------------------------------------------------->
+  <p-panel header="Get in Touch" styleClass="contact-panel">
+    <p class="p-text-center p-mb-3">
+      Got an idea, a suggestion, or just want to raise a glass with us
+      (virtually)? We’d love to hear from you!
+    </p>
+
+    <div class="p-d-flex p-jc-center">
+      <a
+        pButton
+        icon="pi pi-send"
+        label="Drop us a line"
+        href="mailto:hello@findrink.app"
+        class="p-button-primary"
+      ></a>
+    </div>
+  </p-panel>
+</section>

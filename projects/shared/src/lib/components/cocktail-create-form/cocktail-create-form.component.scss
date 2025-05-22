@@ -1,225 +1,368 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// 1. Variables – tweak freely
+// ──────────────────────────────────────────────────────────────────────────────
+$gap-base : .75rem;          // universal gap “atom”
+$bp-sm    : 600px;           // phones ≥ 400 handled by default
+$bp-md    : 960px;           // tablets / small laptops
+$bp-lg    : 1440px;          // large / FHD
+
+$pad-card : clamp(1rem, 2vw, 3rem);
+$w-image  : clamp(240px, 32vw, 420px);
+$w-card   : clamp(960px, 90vw, 1380px);
+
+// ──────────────────────────────────────────────────────────────────────────────
+// 2. Global helpers
+// ──────────────────────────────────────────────────────────────────────────────
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+.p-dialog { max-width: 95vw; max-height: 95vh; }  // keep every dialog in-view
+
+// ──────────────────────────────────────────────────────────────────────────────
+// 3. Mobile & tablet ( < 960 px )
+// ──────────────────────────────────────────────────────────────────────────────
 .cocktail-create {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: $gap-base * 2;
 
+  // — 3.1 cocktail name ————————————————————————————————
   .cocktail-name-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
+    text-align: center;
+    padding-inline: $gap-base * 2;
   }
 
-  .cocktail-name {
-    width: 100%;
-    max-width: 600px;
-    font-size: 1.25rem;
-    padding: 0.75rem;
-    border-radius: 4px;
-  }
-
+  // — 3.2 big card wrapper ———————————————————————————————
   .cocktail-card {
-    display: flex;
-    flex-direction: column;
-    padding: 0 5rem;
+    width: 100%;
 
     .card-content {
       display: flex;
       flex-direction: column;
-      padding: 0 1rem;
-      gap: 2rem;
+      gap: $gap-base * 2;
+      padding: $pad-card;
+    }
 
-      @media (min-width: 768px) {
-        flex-direction: row;
+    // 3.2-a image
+    .image-side {
+      width: 100%;
+      .image-preview p-image,
+      .image-preview img {   // Prime adds <img> internally in preview mode
+        width: 100%;
+        height: auto;
       }
+    }
 
-      .image-side {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        max-width: 350px;
+    // 3.2-b info column
+    .info-container {
+      display: flex;
+      flex-direction: column;
+      gap: $gap-base * 2;
 
-        .image-wrapper {
-          width: 100%;
-          max-width: 350px;
-        }
-
-        .image-preview {
-          width: 100%;
-          max-width: 350px;
-          height: 350px;
-          border-radius: 4px;
-        }
-      }
-
-      .info-container {
-        flex: 1;
+      .top-info {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
+        gap: $gap-base * 2;
+      }
+    }
+  }
 
-        .top-info {
+  // — 3.3 generic control spacing ——————————————————————————
+  // Any Prime input / dropdown / button gets vertical rhythm
+  .p-inputtext,
+  .p-dropdown,
+  .p-multiselect,
+  .p-inputnumber,
+  .p-select,
+  textarea,
+  button { width: 100%; margin-block: $gap-base; }
+
+  // make sure the quantity & number spinners never overflow
+  .quantity-input,
+  .p-inputnumber input { width: 100%; }
+
+  textarea#instructions-text { resize: vertical; }
+
+  // — 3.4   ingredient section tweaks ————————————————
+  .ingredients-label,
+  .p-inputnumber-label { margin-bottom: .25rem; }
+
+  .ingredient-controls {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-base;
+  }
+
+  // — 3.5   IMAGE SEARCH dialog (fits screen) ————————————
+  .p-dialog {
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      gap: $gap-base;
+      padding-block-end: $gap-base;
+      > * { flex: 0 0 auto; }
+      input { width: 14rem; }           // comfortable width on mobiles
+    }
+
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+      gap: $gap-base;
+      overflow: hidden;                 // no scroll requested
+    }
+  }
+
+  // — 3.6   ADD-INGREDIENT dialog fix ————————————————
+  .inputs-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-base;
+    .buttons-dialog {
+      display: flex;
+      justify-content: flex-end;
+      gap: $gap-base;
+    }
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   DESKTOP & LAPTOP  (≥ 1440 px)
+   ────────────────────────────────────────────────────────────────*/
+@media (min-width: 1440px) {
+
+  /* root of the dialog (header + content + footer) */
+  :host ::ng-deep .image-dialog {
+    /* values copied from your inline [style] */
+    max-width: 1500px !important;   /* override Prime’s inline width      */
+    width: 100%;
+    height: 100%;
+    margin: 1rem;
+    background: black;
+
+    /* flex so header / content / footer can stack vertically
+       (PrimeNG already does ‘flex’; this just makes it explicit) */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* gap belongs on the CONTENT box, not the shell,
+     so you only space the thumbnails / search-bar area.            */
+  :host ::ng-deep .image-dialog .p-dialog-content {
+    display: flex;                  /* keep thumbnails & search-bar flex  */
+    flex-direction: column;
+    gap: .5rem;                     /* ← your 0.5 rem gap                 */
+  }
+
+  .cocktail-create {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .cocktail-name-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .cocktail-name {
+      width: 100%;
+      max-width: 600px;
+      font-size: 1.25rem;
+      padding: 0.75rem;
+      border-radius: 4px;
+    }
+
+    .cocktail-card {
+      display: flex;
+      flex-direction: column;
+      padding: 0 5rem;
+
+      .card-content {
+        display: flex;
+        flex-direction: row;
+        padding: 0 1rem;
+        gap: 2rem;
+
+        .image-side {
+          flex: 1;
           display: flex;
-          flex-direction: row;
-          gap: 2rem;
+          justify-content: center;
+          align-items: flex-start;
+          max-width: 350px;
 
-          @media (min-width: 1024px) {
-            flex-direction: row;
+          .image-wrapper {
+            width: 100%;
+            max-width: 350px;
           }
 
-          .info-section {
-            flex: 1;
+          .image-preview {
+            width: 100%;
+            max-width: 350px;
+            height: 350px;
+            border-radius: 4px;
+          }
+        }
+
+        .info-container {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+
+          .top-info {
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+
+            .info-section {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              gap: 1rem;
+
+              .input-number-label {
+                display: flex;
+                width: 600px;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                font-size: 20px;
+                max-width: fit-content;
+                gap: 1rem;
+                flex-direction: row;
+              }
+
+              .p-inputgroup {
+                display: flex;
+                font-size: medium;
+                gap: 1rem;
+                align-items: center;
+                margin-top: auto;
+                justify-content: center;
+                flex-direction: row;
+
+                .search-bar {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  margin-bottom: 5rem;
+                  gap: 1rem;
+                }
+
+                .images-grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                  gap: 1rem;
+                  margin-top: 1rem;
+                }
+              }
+
+              .select-ingredient {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+
+                .ingredient-controls {
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  gap: $gap-base;
+
+                  p-select,
+                  input,
+                  .p-inputtext {
+                    flex: 1;
+                  }
+
+                  .p-button-sm {
+                    flex-shrink: 0;
+                  }
+                }
+              }
+
+              &.ingredients {
+                .ingredient-selectors {
+                  display: flex;
+                  align-items: center;
+                  gap: 1rem;
+                  margin-top: 10px;
+                  max-width: 800px;
+
+                  p-select {
+                    flex: 1;
+                  }
+                }
+              }
+
+              .ingredient-title {
+                margin-top: 0;
+                font-size: 20px;
+              }
+
+              &.categories {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                //margin-left: -10rem;
+                width: 200px;
+              }
+
+              .inputs-dialog {
+                margin-top: 1rem;
+                display: flex;
+                gap: 1rem;
+              }
+
+              .buttons-dialog {
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+              }
+
+            }
+          }
+
+          .instructions {
             display: flex;
             flex-direction: column;
             gap: 1rem;
 
-            .input-number-label {
+            form {
+              width: 100%;
+            }
+
+            label {
+              gap: 1rem;
               display: flex;
-              align-items: center;
-              justify-content: center;
+            }
+
+            textarea {
+              padding: 0.75rem;
+              width: 100%;
+              border-radius: 4px;
+              font-size: 1rem;
+
+              &:focus {
+                outline: none;
+              }
+            }
+
+            label {
               font-weight: bold;
               margin-bottom: 0.5rem;
               font-size: 20px;
-              max-width: 600px;
-              gap: 1rem;
-              flex-direction: row;
-
             }
-
-            .p-inputgroup {
-              display: flex;
-              font-size: medium;
-              gap: 1rem;
-              align-items: center;
-              margin-top: auto;
-              justify-content: center;
-              flex-direction: row;
-
-              .search-bar {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: 5rem;
-                gap: 1rem;
-              }
-
-              .images-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 1rem;
-                margin-top: 1rem;
-              }
-            }
-
-            .select-ingredient {
-              display: flex;
-              flex-direction: column;
-              gap: 0.5rem;
-              width: 100%;
-
-              .ingredients-label {
-                font-weight: 600;
-                margin-bottom: 0.25rem;
-              }
-
-              .ingredient-controls {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-
-                input {
-                  flex: 1;
-                  width: 150px;
-                }
-
-                .p-button-sm {
-                  flex-shrink: 0;
-                }
-              }
-            }
-
-            &.ingredients {
-              .ingredient-selectors {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                margin-top: 10px;
-                max-width: 800px;
-
-                p-select {
-                  flex: 1;
-                }
-              }
-            }
-
-            .ingredient-title {
-              margin-top: 0;
-              font-size: 20px;
-            }
-
-            &.categories {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              margin-left: -10rem;
-              gap: 1rem;
-              width: 100%;
-              max-width: 800px;
-            }
-
-            .inputs-dialog {
-              margin-top: 1rem;
-              display: flex;
-              gap: 1rem;
-            }
-
-            .buttons-dialog {
-              display: flex;
-              justify-content: center;
-              gap: 1rem;
-            }
-
-          }
-        }
-
-        .instructions {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-
-          form {
-            width: 100%;
           }
 
-          label {
-            gap: 1rem;
+          .create-button {
             display: flex;
+            justify-content: center;
+            gap: 1rem;
           }
 
-          textarea {
-            padding: 0.75rem;
-            width: 100%;
-            border-radius: 4px;
-            font-size: 1rem;
-
-            &:focus {
-              outline: none;
-            }
-          }
-
-          label {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            font-size: 20px;
-          }
         }
-
-        .create-button {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-        }
-
       }
     }
   }

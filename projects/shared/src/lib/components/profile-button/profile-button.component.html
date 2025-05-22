@@ -116,7 +116,7 @@
     </p-dialog>
   </div>
   <div class="profileButton" *ngIf="visibles['isLoggedIn']">
-    <p-split-button class="profile-menu" label="Profile" (onClick)="toProfile()" [model]="items" [style]="{ width: 'buttonWidth'}" />
+    <p-split-button class="profile-menu" label="Profile" (onClick)="toProfile()" [model]="items" />
     <p-dialog
       header="Privacy Policy"
       [(visible)]="visibles['privacyDialogVisible']"

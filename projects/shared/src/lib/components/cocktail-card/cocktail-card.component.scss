@@ -54,9 +54,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
+      ::ng-deep img {
+        width: 450px;
+      }
     }
-
-
   }
 
   .info-container {
@@ -102,3 +104,88 @@
     }
   }
 }
+
+/* ────────────────────────────────────────────────────────────────
+   ≤ 1024 px  – stack the cocktail card vertically
+   ────────────────────────────────────────────────────────────────*/
+@media (max-width: 1024px) {
+  .cocktail-pin {
+
+    /* 1️⃣  Card shell stays full-width but gains vertical rhythm */
+    .cocktail-card {
+      padding: 1rem;                          /* optional breathing-room */
+    }
+
+    /* 2️⃣  Flip the two main zones into a column                 */
+    .card-content {
+      display: flex;
+      flex-direction: column;                 /* ⬅️ key change */
+      gap: 1.5rem;                            /* space img ⇢ info */
+    }
+
+    /* 3️⃣  Image (now top) – centred & fluid                     */
+    .image-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      max-width: none;
+
+      .image-wrapper {
+        width: 100%;
+
+        ::ng-deep img {
+          width: 450px;
+
+          @media (max-width: 500px) {
+            width: 350px;
+          }
+
+          @media (max-width: 400px) {
+            width: 320px;
+          }
+        }
+      }
+
+      /* keep heart button over the picture */
+      .favorite-btn {
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+        z-index: 2;
+
+        @media (max-width: 500px) {
+          top: .5rem;
+          right: 7rem;
+          z-index: 2;
+        }
+
+        @media (max-width: 400px) {
+          top: .5rem;
+          right: 9rem;
+          z-index: 2;
+        }
+      }
+
+      p-image,
+      img { width: 100%; height: auto; object-fit: cover }  /* full-width preview */
+    }
+
+    /* 4️⃣  Info area (ingredients / type / instructions) */
+    .info-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      /* ingredients + categories now one below the other */
+      .top-info {
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+      }
+
+      /* instructions already below divider – no change */
+    }
+  }
+}
+

@@ -45,7 +45,7 @@
   <div class="card-section">
     <div class="card-grid">
       <div *ngFor="let card of paginatedResults">
-        <p-card [style]="{ width: '300px', overflow: 'hidden' }">
+        <p-card>
           <ng-template #header>
             <!-- <p-skeleton></p-skeleton> -->
             <p-image
@@ -53,7 +53,6 @@
               class="image-card"
               [src]="card.image"
               [style]="{'cursor': 'pointer'}"
-              width="300"
               [preview]="true"
               (click)="displayCardPage(card.id)"
               >

@@ -15,33 +15,45 @@
 
         <!-- Tab Buttons -->
         <div class="tab-buttons-column">
-          <p-button
-            label="Details"
-            [class]="selectedMenu === 'details' ? 'p-button-primary' : 'p-button-outlined'"
-            (click)="selectMenu('details')"
-            severity="secondary"
-          ></p-button>
+          <div class="first-row-btn">
+            <div class="details-btn">
+              <p-button
+                label="Details"
+                [class]="selectedMenu === 'details' ? 'p-button-primary' : 'p-button-outlined'"
+                (click)="selectMenu('details')"
+                severity="secondary"
+              ></p-button>
+            </div>
 
-          <p-button
-            label="Favorites"
-            [class]="selectedMenu === 'favorites' ? 'p-button-primary' : 'p-button-outlined'"
-            (click)="selectMenu('favorites')"
-            severity="secondary"
-          ></p-button>
+            <div class="privacy-btn">
+              <p-button
+                label="Privacy and data"
+                [class]="selectedMenu === 'privacy' ? 'p-button-primary' : 'p-button-outlined'"
+                (click)="selectMenu('privacy')"
+                severity="secondary"
+              ></p-button>
+            </div>
+          </div>
 
-          <p-button
-            label="Cocktail submitted"
-            [class]="selectedMenu === 'submitted' ? 'p-button-primary' : 'p-button-outlined'"
-            (click)="selectMenu('submitted')"
-            severity="secondary"
-          ></p-button>
+          <div class="second-row-btn">
+            <div class="favorites-btn">
+              <p-button
+                label="Favorites"
+                [class]="selectedMenu === 'favorites' ? 'p-button-primary' : 'p-button-outlined'"
+                (click)="selectMenu('favorites')"
+                severity="secondary"
+              ></p-button>
+            </div>
 
-          <p-button
-            label="Privacy and data"
-            [class]="selectedMenu === 'privacy' ? 'p-button-primary' : 'p-button-outlined'"
-            (click)="selectMenu('privacy')"
-            severity="secondary"
-          ></p-button>
+            <div class="submitted-btn">
+              <p-button
+                label="Cocktail submitted"
+                [class]="selectedMenu === 'submitted' ? 'p-button-primary' : 'p-button-outlined'"
+                (click)="selectMenu('submitted')"
+                severity="secondary"
+              ></p-button>
+            </div>
+          </div>
 
         </div>
 
@@ -125,7 +137,6 @@
         <div *ngIf="selectedMenu === 'favorites'" class="favorites-grid">
           <p-card
           *ngFor="let card of paginatedFavorites"
-          [style]="{ width: '300px', overflow: 'hidden' }"
           >
             <ng-template #header>
               <p-image
@@ -133,7 +144,6 @@
               class="image-card"
                 [src]="card.image"
                 [style]="{ cursor: 'pointer' }"
-                width="300"
                 [preview]="true"
                 (click)="displayCardPage(card.id, undefined)"
                 >
@@ -169,15 +179,13 @@
 
         <!-- * SUBMITTED -->
         <div class="submitted-grid" *ngIf="selectedMenu === 'submitted'">
-          <p-card *ngFor="let card of paginatedSubmissions; let index = index" [style]="{ width: '350px', overflow: 'hidden' }">
+          <p-card *ngFor="let card of paginatedSubmissions; let index = index">
             <ng-template #header>
               <p-image
                 alt="Cocktail card"
                 class="image-card"
                 [src]="card.image"
                 [style]="{ cursor: 'pointer' }"
-                width="350"
-                height="auto"
                 [preview]="true"
                 (click)="card.status === 'Approved' ? displayCardPage(undefined, card.name) : ''"
               >

@@ -42,10 +42,6 @@ export class ProfileButtonComponent implements OnInit {
     birthDate: 'Birth Date',
   }
 
-  policy: { [key: string]: string } = {
-
-  }
-
   passwordTips: { [key: string]: string } = {
     minLength: 'At least 8 characters long',
     upperCase: 'At least one uppercase letter',
@@ -84,8 +80,6 @@ export class ProfileButtonComponent implements OnInit {
   privacyForm!: FormGroup;
   loginForm!: FormGroup;
   registerForm!: FormGroup;
-
-  buttonWidth: string = window.innerWidth <= 400 ? '100%' : 'auto';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -136,6 +130,13 @@ export class ProfileButtonComponent implements OnInit {
         icon: 'pi pi-fw pi-shield',
         command: () => {
           this.showPolicy();
+        }
+      },
+      {
+        label: 'About',
+        icon: 'pi pi-fw pi-question',
+        command: () => {
+          this.router.navigate(['/about']);
         }
       },
       {

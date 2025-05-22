@@ -1,0 +1,56 @@
+/*  FinDrink · About  – PrimeFlex helpers keep CSS minimal  */
+$gutter     : 1rem;
+$bp-desktop : 1024px;
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  margin-top: 20px;
+  height: 50px;
+}
+
+.cocktail {
+  height: 100vh;
+}
+
+.left-section {
+  display: flex;
+
+}
+.right-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.about-page {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 1rem clamp(.75rem, 4vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: $gutter * 2;
+}
+
+/* brand accent */
+.brand { color: var(--primary-color); }
+
+/* tighten default card paddings a little */
+.hero-card .p-card-content { padding-bottom: 0 !important; }
+.team-panel .p-panel-content,
+.contact-panel .p-panel-content { padding-top: 0 !important; }
+
+/* readable line length on big screens */
+.line-length { max-width: 60ch; margin-inline: auto; }
+
+/* avatar colour */
+.avatar { background: var(--primary-color); color: #fff; }
+
+/* optional: raise z-index of toast if it hides behind modals */
+p-toast { z-index: 1100; }
+
+/* bigger vertical rhythm on desktop */
+@media (min-width: $bp-desktop) { .about-page { gap: $gutter * 3; } }

@@ -119,6 +119,12 @@
   width: 100%;
   justify-items: center;
   gap: 1rem;
+
+  ::ng-deep img {
+    width: 300px;
+    height: auto;
+    overflow: hidden;
+  }
 }
 
 .image-card {
@@ -169,4 +175,90 @@ p-card {
   text-align: center;
   text-justify: auto;
 }
+
+/* ────────────────────────────────────────────────────────────────
+   SEARCH  –  smartphone & tablet  ( ≤ 1024 px )
+   ────────────────────────────────────────────────────────────────*/
+@media (max-width: 1024px) {
+
+  /* 1️⃣  TOP BAR  – let L / R icons stay inline, push the search bar down */
+  .top-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem;
+
+    .left-section  { flex: 0 0 auto; }   /* stays at the start     */
+    .right-section {                     /* ⬅ pushes to far right  */
+      flex: 0 0 auto;
+      margin-left: auto;                 /* magic line             */
+    }
+
+    .center-section {
+      flex: 1 1 100%;
+      order: 3;                          /* full-width row below   */
+      margin-top: .5rem;
+
+      .search-bar {
+        width: 100%;
+        max-width: 100%;
+
+        .input-wrapper,
+        .search-input { width: 100%; font-size: smaller; }
+      }
+    }
+  }
+
+  /* 2️⃣  FILTERS – keep their own spacing (unchanged otherwise) */
+  .filters {
+    margin-top: 6rem;
+
+    @media (max-width: 800px) {
+      margin-top: 6rem;
+    }
+
+    @media (max-width: 600px) {
+      margin-top: 4.75rem;
+    }
+  }
+
+  /* 3️⃣  CARD GRID – always TWO columns on devices */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);   /* ← two equal tracks    */
+    gap: 1rem;
+    justify-items: center;                    /* centre each card     */
+
+    @media (max-width: 500px) {
+      ::ng-deep img, p-card, p-image {
+        width: 200px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      ::ng-deep img, p-card, p-image {
+        width: 180px;
+      }
+    }
+  }
+
+  /* 3-a  Override hard-wired 300 px widths on the cards / images */
+  .card-grid p-card      { width: 100% !important; max-width: 150px; }
+  .card-grid p-image,
+  .card-grid .image-card { width: 100% !important; height: auto; }
+
+  /* 4️⃣  TITLE ROW INSIDE CARD – prevent label / heart wrap issues */
+  .title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    span       { flex: 1 1 auto; }
+    .fav-button{ flex: 0 0 auto; }
+  }
+
+  /* 5️⃣  PAGINATOR – centred & comfy */
+  .paginator { margin-block: 1.25rem; text-align: center; }
+}
+
 
