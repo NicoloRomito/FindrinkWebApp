@@ -178,6 +178,11 @@ export class ProfileButtonComponent implements OnInit {
 
   // * INIT FUNCTION
   ngOnInit(): void {
+    this.authService.getIsLoggedIn().subscribe((isLoggedIn: boolean) => {
+      console.log('User logged in status:', isLoggedIn);
+      this.visibles['isLoggedIn'] = isLoggedIn;
+    });
+
     if (this.authService.isLoggedIn()) {
       if (this.authService.isTokenExpired(this.authService.getJwtToken()!)) {
         if (this.authService.getRefreshToken()) {

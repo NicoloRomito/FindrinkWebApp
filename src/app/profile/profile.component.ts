@@ -506,7 +506,34 @@ export class ProfileComponent implements OnInit {
 
     ).subscribe({
       next: (response) => {
-        this.redirectHome();
+        this.authService.logout(this.authService.getRefreshToken()!)
+          .subscribe({
+            next: () => {
+              this.authService.clearTokens();
+              this.authService.setLoggedIn(false);
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Logout successful',
+                detail: 'You have been logged out',
+                life: 3000,
+                closable: true,
+              });
+              this.authService.clearTokens();
+              this.router.navigate(['/home']);
+            },
+            error: (error: any) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Logout failed',
+                detail: error.error.message,
+                life: 5000,
+                closable: true,
+              });
+            }
+          });
+        this.router.navigate(['/home']).then(() => {
+          window.location.reload();
+        });
       },
       error: (error) => {
         console.error('Error updating profile', error);

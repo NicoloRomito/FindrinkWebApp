@@ -13,8 +13,15 @@ export class AuthService {
   private adminSubmissionsAPI: string = 'http://localhost:5000/submission/admin/pending';
   private changePasswordAPI: string = 'http://localhost:5000/auth/api/auth/change-password';
 
-  private loggedIn = new BehaviorSubject<boolean>(this.isLoggedIn());
-  loggedIn$ = this.loggedIn.asObservable();
+  private loggedIn$ = new BehaviorSubject<boolean>(this.getJwtToken()! !== null);
+
+  getIsLoggedIn(): Observable<boolean> {
+    return this.loggedIn$.asObservable();
+  }
+
+  setLoggedIn(value: boolean): void {
+    this.loggedIn$.next(value);
+  }
 
   constructor(private http: HttpClient) { }
 

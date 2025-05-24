@@ -144,8 +144,15 @@ export class SearchComponent implements OnInit {
     const returnString: string[] = this.SearchInput.filters
       .map((filter: SearchInput) => {
         const filters: string[] = [];
-        if (filter.filterType !== 'cocktail')
-          filters.push(filter.filterName);
+        if (filter.filterType !== 'cocktail') {
+          if (filter.filterName === 'true') {
+            filters.push('Alcoholic');
+          } else if (filter.filterName === 'false') {
+            filters.push('Non Alcoholic');
+          } else {
+            filters.push(filter.filterName);
+          }
+        }
         return filters;
       })
       .flat();
@@ -222,7 +229,7 @@ export class SearchComponent implements OnInit {
             })),
             ...formValues.alcoholic.map((item: any) => ({
               filterType: 'alcoholic',
-              filterName: item.name
+              filterName: item.name === 'Alcoholic' ? 'true' : 'false'
             })),
             ...(formValues.query ? [{ filterType: 'cocktail', filterName: formValues.query }] : [])
           ];
