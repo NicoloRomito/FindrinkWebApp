@@ -1,4 +1,5 @@
 <div class="cocktail-create">
+  <p-toast position="top-center"></p-toast>
   <div class="cocktail-name-container">
     <form [formGroup]="selectedForm">
       <p-float-label variant="on">
@@ -110,6 +111,8 @@
                             optionLabel="name"
                             [placeholder]="placeholders['ingredients']"
                             [showClear]="true"
+                            [filter]="true"
+                            [filterBy]="'name'"
                             ></p-select>
 
                               <p-float-label variant="on">
@@ -117,7 +120,7 @@
                                 <label for="on_label">Insert quantity</label>
                               </p-float-label>
 
-                              <p-select [options]="filterOptions['measures']" formControlName="measure" [placeholder]="placeholders['measure']" optionLabel="name" [showClear]="true"  />
+                              <p-select [options]="filterOptions['measures']" formControlName="measure" [filter]="true" [filterBy]="'name'" [placeholder]="placeholders['measure']" optionLabel="name" [showClear]="true"  />
 
                               <p-button icon="pi pi-plus" (click)="openIngredientDialog(index)" class="p-button-sm"></p-button>
                           </div>
@@ -146,7 +149,7 @@
                     <input type="text" id="quantity" pInputText formControlName="quantity" />
                     <label for="quantity">Insert quantity</label>
                   </p-float-label>
-                  <p-select [options]="filterOptions['measures']" formControlName="measure" [appendTo]="'body'" [placeholder]="placeholders['measure']" optionLabel="name" [showClear]="true" />
+                  <p-select [options]="filterOptions['measures']" formControlName="measure" [filter]="true" [filterBy]="'name'" [appendTo]="'body'" [placeholder]="placeholders['measure']" optionLabel="name" [showClear]="true" />
                   <div class="buttons-dialog">
                     <p-button label="Cancel" icon="pi pi-times" (click)="ingredientDialog = false" severity="secondary"></p-button>
                     <p-button label="Add" icon="pi pi-check" (click)="addIngredient()" ></p-button>
@@ -160,11 +163,11 @@
           <form [formGroup]="selectedForm">
             <div class="info-section categories">
               <h3>Type</h3>
-              <p-select [options]="filterOptions['type']" formControlName="type" [placeholder]="placeholders['type']" optionLabel="name" [showClear]="true"></p-select>
+              <p-select [options]="filterOptions['type']" formControlName="type" [placeholder]="placeholders['type']" optionLabel="name" [filter]="true" [filterBy]="'name'" [showClear]="true"></p-select>
               <h3>Glass</h3>
-              <p-select [options]="filterOptions['glass']" formControlName="glass" [placeholder]="placeholders['glass']" optionLabel="name" [showClear]="true"></p-select>
+              <p-select [options]="filterOptions['glass']" formControlName="glass" [placeholder]="placeholders['glass']" optionLabel="name" [filter]="true" [filterBy]="'name'" [showClear]="true"></p-select>
               <h3>Alcoholic</h3>
-              <p-select [options]="filterOptions['alcoholic']" formControlName="alcoholic" [placeholder]="placeholders['alcoholic']" optionLabel="name" [showClear]="true"></p-select>
+              <p-select [options]="filterOptions['alcoholic']" formControlName="alcoholic" [placeholder]="placeholders['alcoholic']" optionLabel="name" [filter]="true" [filterBy]="'name'" [showClear]="true"></p-select>
             </div>
           </form>
         </div>

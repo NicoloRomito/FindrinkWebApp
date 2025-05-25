@@ -56,11 +56,18 @@ export class CreateComponent implements OnInit {
 
   handleSubmit(form: FormGroup): void {
     if (form.invalid) {
+      const invalidFields = Object.keys(form.controls)
+      .filter(key => form.get(key)?.invalid)
+      .map(key => key.charAt(0).toUpperCase() + key.slice(1))
+      .join(', ');
+
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'Please fill all required fields',
-        life: 3000
+        detail: invalidFields
+          ? `Please fill in all the required fields:\n${invalidFields}.`
+          : 'Please fill in all the required fields.',
+        life: 5000
       });
       return;
     }

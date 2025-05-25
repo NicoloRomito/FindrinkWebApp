@@ -283,6 +283,8 @@ export class SearchComponent implements OnInit {
         this.historyService.addToHistory(this.SearchInput.filters, 'select');
       }
     });
-    this.router.navigate(['/card'], { queryParams: { cocktailId: id} });
+    this.router.navigate(['/card'], { queryParams: { cocktailId: id} }).then(() => {
+      window.location.reload();
+    });
   }
 }

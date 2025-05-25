@@ -414,10 +414,14 @@ export class ProfileComponent implements OnInit {
               this.historyService.addToHistory([{ filterType: 'cocktail', filterName: cocktailId }], 'search');
             }
           });
-          this.router.navigate(['/card'], { queryParams: { cocktailId: cocktailId } });
+          this.router.navigate(['/card'], { queryParams: { cocktailId: cocktailId } }).then(() => {
+            window.location.reload();
+          });
         });
     } else if (cocktailId && name === undefined) {
-      this.router.navigate(['/card'], { queryParams: { cocktailId: cocktailId } });
+      this.router.navigate(['/card'], { queryParams: { cocktailId: cocktailId } }).then(() => {
+        window.location.reload();
+      });
     }
   }
 

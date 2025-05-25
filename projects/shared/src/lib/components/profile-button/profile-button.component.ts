@@ -179,7 +179,6 @@ export class ProfileButtonComponent implements OnInit {
   // * INIT FUNCTION
   ngOnInit(): void {
     this.authService.getIsLoggedIn().subscribe((isLoggedIn: boolean) => {
-      console.log('User logged in status:', isLoggedIn);
       this.visibles['isLoggedIn'] = isLoggedIn;
     });
 
@@ -337,14 +336,14 @@ export class ProfileButtonComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
             this.authService.saveTokens(undefined, undefined, response.userId);
-            // * Updating prrofile data when registering to fill the fields
+            // * Updating profile data when registering to fill the fields
             this.authService.updateProfile(
               this.registerForm.controls['name'].value,
               this.registerForm.controls['surname'].value,
               this.registerForm.controls['birthDate'].value,
               this.isOver18(birthDate),
               this.privacyForm.controls['privacyCheck'].value,
-              this.privacyForm.controls['profilingCheck'].value)
+              this.privacyForm.controls['profilingCheck'].value || false)
               .subscribe({
                 next: () => {
                   this.messageService.add({

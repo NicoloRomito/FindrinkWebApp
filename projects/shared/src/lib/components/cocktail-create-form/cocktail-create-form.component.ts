@@ -18,6 +18,7 @@ import { Select } from 'primeng/select';
 import { FluidModule } from 'primeng/fluid';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Toast } from 'primeng/toast';
 
 interface Filter {
   id?: string;
@@ -40,7 +41,7 @@ interface ImageAPI {
     InputNumberModule, InputTextModule, FloatLabelModule,
     SelectButtonModule, DropdownModule, ImageModule,
     DividerModule, TextareaModule, PaginatorModule,
-    FluidModule, CommonModule, ReactiveFormsModule
+    FluidModule, CommonModule, ReactiveFormsModule, Toast
   ],
   templateUrl: './cocktail-create-form.component.html',
   styleUrls: ['./cocktail-create-form.component.scss'],
@@ -214,7 +215,6 @@ export class CocktailCreateFormComponent implements OnInit {
   }
 
   createCocktail(): void {
-    if (this.selectedForm.invalid) return;
     this.submitForm.emit(this.selectedForm);
   }
 
